@@ -15,7 +15,7 @@
     "max-line-length": [true, 80],
     "member-ordering": [false],
     "curly": false,
-    "interface-name": [true],
+    "interface-name": [false],
     "array-type": [false],
     "no-empty-interface": true,
     "no-empty": false,
@@ -30,7 +30,8 @@
     "semicolon": true,
     "indent": [true, "spaces", 2],
     "import-name": false,
-    "trailing-comma": true
+    "trailing-comma": true,
+    "no-console": false
   },
   "rulesDirectory": []
 }
