@@ -31,7 +31,9 @@
     "indent": [true, "spaces", 2],
     "import-name": false,
     "trailing-comma": true,
-    "no-console": false
+    "no-console": false,
+    "no-shadowed-variable": false,
+    "typedef": [true, "arrow-call-signature", "arrow-parameter"]
   },
   "rulesDirectory": []
 }

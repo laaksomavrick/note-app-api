@@ -1,40 +1,17 @@
+import bodyParser from "body-parser";
 import express from "express";
-let app = express();
-const port = 3000;
+import config from "./config";
+import healthz from "./healthz";
 
-interface Server {
-  db: any;
-}
+const app = express();
+const port = config.get("port") || 3000;
 
-const server: Server = { db: "db" };
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-const healthz = (server: Server) => (
-  req: express.Request,
-  res: express.Response,
-): void => {
-  res.send({
-    server: true,
-    db: server.db === "db"
-  });
-};
+// middlewares(app);
+// routes(app);
 
-app.get("/healthz", healthz(server));
+healthz(app);
 
-// or
-
-const wire = (app: express.Express): express.Express => {
-  app.locals.db = "db";
-  return app;
-};
-
-app = wire(app);
-
-app.get("/healthz2", (req, res) => {
-  const { db } = req.app.locals;
-  res.send({
-    server: true,
-    db: db === "db"
-  });
-});
-
-app.listen(port, () => console.log(`app listening port:${port}`));
+app.listen(port, () => console.log(`Server started on port: ${port}`));
