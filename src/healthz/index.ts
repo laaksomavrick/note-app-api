@@ -1,6 +1,9 @@
 import express from "express";
+import Core from "../core";
 import { get } from "./handlers";
 
-export default (app: express.Express): void => {
-  app.get("/healthz", get);
+export default (core: Core): ((app: express.Express) => void) => {
+  return (app: express.Express): void => {
+    app.get("/healthz", get(core));
+  };
 };
