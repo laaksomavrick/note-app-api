@@ -7,6 +7,6 @@ spec:
     app: notesapi
   ports:
     - protocol: TCP
-      port: 120
+      port: 80
       targetPort: 3000
   type: LoadBalancer
