@@ -13,5 +13,6 @@ export default knex({
     min: 2,
     max: 10,
   },
-  debug: config.get("env") !== "production",
+  debug: false,
+  // debug: config.get("env") !== "production",
 });

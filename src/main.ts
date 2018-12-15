@@ -1,28 +1,31 @@
-import bodyParser from "body-parser";
 import express from "express";
 import config from "./config";
 import Core from "./core";
-import db from "./db";
+import knex from "./db";
 import healthz from "./healthz";
+import logger from "./logger";
+import middlewares from "./middlewares";
 
 const app = express();
 const port = config.get("port") || 3000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+middlewares(app);
 
 const core: Core = {
-  knex: db,
+  knex,
+  logger,
 };
 
-// middlewares(app);
 // routes(app);
 
 healthz(core)(app);
 
 // todo consolidate db check and server start into an init
-db.raw("select 1 + 1 as result").then(() => {
+knex.raw("select 1 + 1 as result").then(() => {
   console.log(`Database connection established`);
 });
 
 app.listen(port, () => console.log(`Server started on port: ${port}`));
+
+// bootstrap = async () => {...}
+// bootstrap()

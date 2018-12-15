@@ -33,14 +33,18 @@
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.7.0",
     "tslint": "^5.11.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.2.2",
+    "@types/convict": "^4.2.1",
+    "@types/morgan": "^1.7.35",
+    "@types/winston": "^2.4.4"
   },
   "dependencies": {
-    "@types/convict": "^4.2.1",
     "body-parser": "^1.18.3",
     "convict": "^4.4.0",
     "express": "^4.16.4",
     "knex": "^0.16.2",
-    "pg": "^7.7.1"
+    "morgan": "^1.9.1",
+    "pg": "^7.7.1",
+    "winston": "^3.1.0"
   }
 }

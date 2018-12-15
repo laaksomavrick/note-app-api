@@ -12,7 +12,7 @@
     "quotemark": [true, "double"],
     "member-access": [false],
     "ordered-imports": [true],
-    "max-line-length": [true, 120],
+    "max-line-length": [true, 80],
     "member-ordering": [false],
     "curly": false,
     "interface-name": [false],
@@ -33,7 +33,7 @@
     "trailing-comma": true,
     "no-console": false,
     "no-shadowed-variable": false,
-    "typedef": [true, "arrow-call-signature", "arrow-parameter"]
+    "typedef": [false, "arrow-call-signature", "arrow-parameter"]
   },
   "rulesDirectory": []
 }
