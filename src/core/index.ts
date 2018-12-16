@@ -1,7 +1,7 @@
-import knex from "knex";
 import winston from "winston";
+import { Database } from "../db";
 
 export default interface Core {
-  knex: knex;
+  db: Database;
   logger: winston.Logger;
 }

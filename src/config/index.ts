@@ -25,7 +25,7 @@ const config = convict({
       env: "DB_HOST",
     },
     port: {
-      default: 3306,
+      default: 5432,
       env: "DB_PORT",
     },
     username: {

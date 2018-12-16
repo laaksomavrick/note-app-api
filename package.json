@@ -21,10 +21,16 @@
     "docker:prod:push": "docker push laaksomavrick/notesapi:latest"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/change-case": "^2.3.1",
+    "@types/convict": "^4.2.1",
     "@types/express": "^4.16.0",
+    "@types/faker": "^4.1.4",
     "@types/jest": "^23.3.10",
-    "@types/knex": "^0.15.1",
+    "@types/morgan": "^1.7.35",
     "@types/node": "^10.12.12",
+    "@types/pg": "^7.4.11",
+    "@types/winston": "^2.4.4",
     "jest": "^23.6.0",
     "nodemon": "^1.18.8",
     "prettier": "^1.15.3",
@@ -33,16 +39,15 @@
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.7.0",
     "tslint": "^5.11.0",
-    "typescript": "^3.2.2",
-    "@types/convict": "^4.2.1",
-    "@types/morgan": "^1.7.35",
-    "@types/winston": "^2.4.4"
+    "typescript": "^3.2.2"
   },
   "dependencies": {
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
+    "change-case": "^3.0.2",
     "convict": "^4.4.0",
     "express": "^4.16.4",
-    "knex": "^0.16.2",
+    "faker": "^4.1.0",
     "morgan": "^1.9.1",
     "pg": "^7.7.1",
     "winston": "^3.1.0"

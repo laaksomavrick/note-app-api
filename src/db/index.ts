@@ -1,18 +1,20 @@
-import knex from "knex";
+import pg from "pg";
 import config from "../config";
 
-export default knex({
-  client: "pg",
-  connection: {
-    host: config.get("database.host"),
-    user: config.get("database.username"),
-    password: config.get("database.password"),
-    database: config.get("database.schema"),
-  },
-  pool: {
-    min: 2,
-    max: 10,
-  },
-  debug: false,
-  // debug: config.get("env") !== "production",
+export interface Database {
+  query: (text, params) => Promise<pg.QueryArrayResult>;
+}
+
+const pool = new pg.Pool({
+  host: config.get("database.host"),
+  port: config.get("database.port"),
+  user: config.get("database.username"),
+  password: config.get("database.password"),
+  database: config.get("database.schema"),
 });
+
+const db: Database = {
+  query: (text, params) => pool.query(text, params),
+};
+
+export default db;
