@@ -1,38 +1,24 @@
+import bodyParser from "body-parser";
 import express from "express";
+import morgan from "morgan";
 import config from "./config";
-import Core from "./core";
-import db from "./db";
-import healthz from "./healthz";
-import logger from "./logger";
-import middlewares from "./middlewares";
-import users from "./users";
+import { wireApp } from "./core";
+import { globalErrorHandler } from "./middlewares";
 
-const app = express();
-const port = config.get("port") || 3000;
+const bootstrap = async () => {
+  const app = express();
+  const port = config.get("port") || 3000;
 
-// maybe pull these out; need to define pre and posts
-middlewares(app);
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(morgan("combined")); // todo write to file in prod
 
-const core: Core = {
-  db,
-  logger,
+  wireApp(app);
+
+  app.use(globalErrorHandler);
+
+  await app.listen(port);
+  console.log(`Server started on port: ${port}`);
 };
 
-// routes(app);
-
-users(core)(app);
-healthz(core)(app);
-
-app.use((error, req, res, next) => {
-  res.status(500).send({ error });
-});
-
-// todo consolidate db check and server start into an init
-db.query("select 1 + 1 as result", []).then(() => {
-  console.log(`Database connection established`);
-});
-
-app.listen(port, () => console.log(`Server started on port: ${port}`));
-
-// bootstrap = async () => {...}
-// bootstrap()
+bootstrap();

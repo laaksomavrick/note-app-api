@@ -4,12 +4,8 @@ import { Core } from "../core";
 export const get = (core: Core) => async (
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction,
 ) => {
   const { db } = core;
-  await db.query("select 1", []);
-  res.send({
-    server: true,
-    db: true,
-  });
+  const users = await db.query(`SELECT * FROM users`, []);
+  res.send({ users });
 };

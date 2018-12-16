@@ -13,8 +13,6 @@ const pool = new pg.Pool({
   database: config.get("database.schema"),
 });
 
-const db: Database = {
+export const db: Database = {
   query: (text, params) => pool.query(text, params),
 };
-
-export default db;

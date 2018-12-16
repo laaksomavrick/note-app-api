@@ -4,5 +4,5 @@ import { routeErrorHandler } from "../middlewares";
 import { get } from "./handlers";
 
 export default (core: Core) => (app: express.Express) => {
-  app.get("/healthz", routeErrorHandler(get(core)));
+  app.get("/users", routeErrorHandler(get(core)));
 };
