@@ -3,6 +3,7 @@ import config from "../config";
 
 export interface Database {
   query: (text, params) => Promise<pg.QueryArrayResult>;
+  end: () => Promise<void>;
 }
 
 const pool = new pg.Pool({
@@ -14,5 +15,8 @@ const pool = new pg.Pool({
 });
 
 export const db: Database = {
-  query: (text, params) => pool.query(text, params),
+  // tslint:disable-next-line:no-any
+  query: (text: string, params: any[]): Promise<pg.QueryResult> =>
+    pool.query(text, params),
+  end: (): Promise<void> => pool.end(),
 };

@@ -33,7 +33,7 @@
     "trailing-comma": true,
     "no-console": false,
     "no-shadowed-variable": false,
-    "typedef": [false, "arrow-call-signature", "arrow-parameter"]
+    "typedef": [true, "arrow-call-signature", "arrow-parameter"]
   },
   "rulesDirectory": []
 }
