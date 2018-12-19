@@ -6,7 +6,7 @@ export interface Database {
   end: () => Promise<void>;
 }
 
-const pool = new pg.Pool({
+export const pool = new pg.Pool({
   host: config.get("database.host"),
   port: config.get("database.port"),
   user: config.get("database.username"),
