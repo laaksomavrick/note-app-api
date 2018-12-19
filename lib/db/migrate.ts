@@ -8,11 +8,16 @@ const MIGRATIONS_DIRECTORY = path.join(__dirname, "./migrations");
 
 // todo: up; down; rollback
 const main = async (): Promise<void> => {
-  const fileNames = await findSqlFileNames();
-  for (const fileName of fileNames) {
-    await runSqlFile(fileName);
+  try {
+    const fileNames = await findSqlFileNames();
+    for (const fileName of fileNames) {
+      await runSqlFile(fileName);
+    }
+  } catch (e) {
+    console.error(`An error has occurred: ${e}`);
+  } finally {
+    await pool.end();
   }
-  await pool.end();
 };
 
 const findSqlFileNames = async (): Promise<string[]> => {
