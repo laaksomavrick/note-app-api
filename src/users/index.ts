@@ -1,8 +1,10 @@
-import express from "express";
+import { Express } from "express";
+import { routeErrorHandler } from "../api";
 import { Core } from "../core";
-import { routeErrorHandler } from "../middlewares";
 import { get } from "./handlers";
 
-export default (core: Core) => (app: express.Express) => {
-  app.get("/users", routeErrorHandler(get(core)));
+export default (core: Core): ((app: Express) => void) => {
+  return (app: Express): void => {
+    app.get("/users", routeErrorHandler(get(core)));
+  };
 };

@@ -1,11 +1,12 @@
-import express from "express";
+import { Request, Response } from "express";
 import { Core } from "../core";
 
-export const get = (core: Core) => async (
-  req: express.Request,
-  res: express.Response,
-) => {
-  const { db } = core;
-  const users = await db.query(`SELECT * FROM users`, []);
-  res.send({ users });
+export const get = (
+  core: Core,
+): ((req: Request, res: Response) => Promise<void>) => {
+  return async (req: Request, res: Response): Promise<void> => {
+    const { db } = core;
+    const users = await db.query(`SELECT * FROM users`, []);
+    res.send({ users });
+  };
 };

@@ -14,7 +14,8 @@ describe("/healthz", () => {
     const app = bootstrap();
     db.end();
     const response = await supertest(app).get("/healthz");
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(200);
+    expect(response.body.db).toBe(false);
     done();
   });
 
