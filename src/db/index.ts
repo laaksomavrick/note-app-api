@@ -4,6 +4,7 @@ import config from "../config";
 export interface Database {
   query: (text, params) => Promise<pg.QueryArrayResult>;
   end: () => Promise<void>;
+  connect: () => Promise<pg.PoolClient>;
   ping: () => Promise<boolean>;
 }
 
@@ -20,6 +21,7 @@ export const db: Database = {
   query: (text: string, params: any[]): Promise<pg.QueryResult> =>
     pool.query(text, params),
   end: (): Promise<void> => pool.end(),
+  connect: (): Promise<pg.PoolClient> => pool.connect(),
   ping: async (): Promise<boolean> => {
     try {
       await db.query("select 1", []);

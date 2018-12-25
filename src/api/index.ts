@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Core } from "../core";
+import config from "../config";
 
 export interface IHandlerMap {
   [k: string]: ((
@@ -23,7 +24,10 @@ export const routeErrorHandler = (
     } catch (e) {
       const { logger } = core;
       // todo: better log in prod
-      logger.error(e.stack);
+      // eg: an invalid request shouldn't log; something borking should
+      if (config.get("env") !== "test") {
+        logger.error(e.stack);
+      }
       next(e);
     }
   };

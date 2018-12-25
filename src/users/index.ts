@@ -1,12 +1,12 @@
 import { Express } from "express";
 import { inject } from "../api";
 import { Core } from "../core";
-import handlers from "./handlers";
+import { create, get } from "./handlers";
 
 export default (core: Core): ((app: Express) => void) => {
   return (app: Express): void => {
-    const { create, get } = inject(core, handlers);
-    app.get("/users", get);
-    app.post("/users", create);
+    const injected = inject(core, { create, get });
+    app.get("/users", injected.get);
+    app.post("/users", injected.create);
   };
 };

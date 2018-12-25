@@ -19,8 +19,4 @@ describe("/healthz", () => {
     expect(response.body.db).toBe(false);
     done();
   });
-
-  afterAll(() => {
-    return db.end();
-  });
 });

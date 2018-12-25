@@ -58,7 +58,6 @@ if (config.get("env") === "test") {
     database: {
       schema: "notes_test",
     },
-    port: null,
   });
 }
 
