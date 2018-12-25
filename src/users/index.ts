@@ -1,10 +1,12 @@
 import { Express } from "express";
-import { routeErrorHandler } from "../api";
+import { inject } from "../api";
 import { Core } from "../core";
-import { get } from "./handlers";
+import handlers from "./handlers";
 
 export default (core: Core): ((app: Express) => void) => {
   return (app: Express): void => {
-    app.get("/users", routeErrorHandler(get(core)));
+    const { create, get } = inject(core, handlers);
+    app.get("/users", get);
+    app.post("/users", create);
   };
 };

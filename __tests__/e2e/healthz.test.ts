@@ -10,6 +10,7 @@ describe("/healthz", () => {
     done();
   });
 
+  // tslint:disable-next-line:max-line-length
   test("it fails when the database is down", async (done: jest.DoneCallback) => {
     const app = bootstrap();
     db.end();

@@ -1,5 +1,5 @@
 import bodyParser from "body-parser";
-import express, { ErrorRequestHandler } from "express";
+import express from "express";
 import { Express, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import winston from "winston";
@@ -33,11 +33,13 @@ const wireApp = (app: Express): void => {
 };
 
 const globalErrorHandler = (
-  error: ErrorRequestHandler,
+  // todo custom err type
+  // tslint:disable-next-line:no-any
+  error: any,
   req: Request,
   res: Response,
   next: NextFunction,
 ): void => {
-  // check if status
-  res.status(500).send({ error });
+  const status = error.status || 500;
+  res.status(status).send({ error: error.toString(), status });
 };

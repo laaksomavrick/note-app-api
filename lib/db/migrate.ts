@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { pool } from "../../src/db"; //todo, move this up
+import { pool } from "../../src/db"; // todo, move this up
 
 // todo seed.ts; move common fns to common.ts
 

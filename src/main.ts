@@ -1,7 +1,6 @@
 import config from "./config";
 import { bootstrap } from "./core";
 
-// web gui for timesheets?
 // tests
 // migrations
 // seeds
