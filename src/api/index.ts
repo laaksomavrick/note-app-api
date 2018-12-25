@@ -39,3 +39,10 @@ export const inject = (core: Core, handlers: object): IHandlerMap => {
   }
   return map;
 };
+
+export const response = (res: Response, data: object): void => {
+  res.send({
+    status: 200,
+    data,
+  });
+};
