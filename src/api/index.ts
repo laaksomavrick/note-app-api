@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { Core } from "../core";
 import config from "../config";
+import { Core } from "../core";
 
 export interface IHandlerMap {
   [k: string]: ((
@@ -38,8 +38,8 @@ export const inject = (core: Core, handlers: object): IHandlerMap => {
   const map = {};
   for (const key of keys) {
     const fn = handlers[key];
-    const applied = routeErrorHandler(fn(core), core);
-    map[key] = applied;
+    // const applied = routeErrorHandler(fn(core), core);
+    map[key] = fn;
   }
   return map;
 };

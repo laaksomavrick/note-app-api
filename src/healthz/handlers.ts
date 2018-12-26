@@ -1,17 +1,28 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { response } from "../api";
 import { Core } from "../core";
 
-const get = (core: Core): ((req: Request, res: Response) => Promise<void>) => {
-  return async (req: Request, res: Response): Promise<void> => {
-    const { db } = core;
-    const dbOk = await db.ping();
-    res.send({
-      server: true,
-      db: dbOk,
-    });
+export const get = ({
+  db,
+}: Core): ((
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => Promise<void>) => {
+  return async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const dbOk = await db.ping();
+      const healthz = {
+        server: true,
+        db: dbOk,
+      };
+      response(res, healthz);
+    } catch (error) {
+      next(error);
+    }
   };
-};
-
-export default {
-  get,
 };
