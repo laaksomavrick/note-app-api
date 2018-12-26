@@ -2,23 +2,21 @@ import { NextFunction, Request, Response } from "express";
 import config from "../config";
 import { Core } from "../core";
 
+export type Handler = ((
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => Promise<void>);
+
 export interface IHandlerMap {
-  [k: string]: ((
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => Promise<void>);
+  [k: string]: ((req: Request, res: Response, next: NextFunction) => Promise<void>);
 }
 
 export const routeErrorHandler = (
   fn: ((req: Request, res: Response, next: NextFunction) => Promise<void>),
   core: Core,
 ): ((req: Request, res: Response, next: NextFunction) => Promise<void>) => {
-  return async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       await fn(req, res, next);
     } catch (e) {

@@ -1,16 +1,10 @@
 import { hash } from "bcrypt";
 import { NextFunction, Request, Response } from "express";
-import { response } from "../api";
+import { Handler, response } from "../api";
 import { Core } from "../core";
 import { find, insert } from "./repository";
 
-export const create = ({
-  db,
-}: Core): ((
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => Promise<void>) => {
+export const create = ({ db }: Core): Handler => {
   return async (
     { body: { email, password } }: Request,
     res: Response,
