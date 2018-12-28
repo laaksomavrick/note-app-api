@@ -1,6 +1,8 @@
 import winston from "winston";
 import config from "../config";
 
+// todo: log requests, responses in file
+
 const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
@@ -19,9 +21,7 @@ const logger = winston.createLogger({
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
 //
 if (config.get("env") !== "production") {
-  logger.add(
-    new winston.transports.Console({ format: winston.format.simple() }),
-  );
+  logger.add(new winston.transports.Console({ format: winston.format.simple() }));
 }
 
 export default logger;

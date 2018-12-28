@@ -7,8 +7,7 @@ export const validateCreate = (
   next: NextFunction,
 ): void => {
   try {
-    // todo unique email, need to inject core
-    const valid = email !== null && password !== null && password.length > 8;
+    const valid = email !== null && password !== null;
     if (!valid) {
       throw new ValidationError();
     }

@@ -4,6 +4,7 @@ import express from "express";
 import { Express, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import winston from "winston";
+import auth from "../auth";
 import { Database, db } from "../db";
 import healthz from "../healthz";
 import logger from "../logger";
@@ -12,6 +13,8 @@ import users from "../users";
 interface Crypto {
   // tslint:disable-next-line:no-any
   hash: (data: any, saltOrRounds: string | number) => Promise<string>;
+  // tslint:disable-next-line:no-any
+  compare: (data: any, encrypted: string) => Promise<boolean>;
 }
 
 export interface Core {
@@ -38,6 +41,7 @@ const wireApp = (app: Express): void => {
   };
   users(core)(app);
   healthz(core)(app);
+  auth(core)(app);
 };
 
 const globalErrorHandler = (

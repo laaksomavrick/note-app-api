@@ -27,10 +27,32 @@ export const insert = async (
   return id;
 };
 
-export const find = async (db: Database, id: number): Promise<User> => {
+export const find = async (db: Database, id: number): Promise<User | null> => {
   const { rows } = await db.query(`SELECT * FROM users WHERE id = $1`, [id]);
   // tslint:disable-next-line:no-any
   const raw = (rows[0] as any) || null;
+  if (!raw) {
+    return null;
+  }
+  // todo pull this out into util fn for coercing <T>
+  const user: object = {};
+  const keys = Object.keys(raw);
+  for (const key of keys) {
+    const camelKey = camelCase(key);
+    user[camelKey] = raw[key];
+  }
+  return user as User;
+};
+
+export const findByEmail = async (db: Database, email: string): Promise<User | null> => {
+  const { rows } = await db.query(`SELECT * FROM users WHERE email = $1 LIMIT 1`, [
+    email,
+  ]);
+  // tslint:disable-next-line:no-any
+  const raw = (rows[0] as any) || null;
+  if (!raw) {
+    return null;
+  }
   // todo pull this out into util fn for coercing <T>
   const user: object = {};
   const keys = Object.keys(raw);
