@@ -13,6 +13,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
     "db:migrate": "ts-node -r tsconfig-paths/register lib/db/migrate.ts",
+    "db:seed": "ts-node -r tsconfig-paths/register lib/db/seed.ts",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --forceExit --runInBand --config ./test/jest-e2e.json",

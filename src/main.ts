@@ -12,7 +12,7 @@ import { bootstrap } from "./core";
 // auth middleware
 // generic: authorized?; valid?; handle -> service? -> repo; res
 // cleanup of todos, organize files, comments on exported fns and files, clean mess
-// readme support; makefile commands; explanation
+// readme support; makefile commands; explanation; test deployment and how-to
 
 const main = async (): Promise<void> => {
   const port = config.get("port") || 3000;
