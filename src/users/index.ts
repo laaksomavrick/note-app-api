@@ -5,6 +5,6 @@ import { validateCreate } from "./middleware";
 
 export default (core: Core): ((app: Express) => void) => {
   return (app: Express): void => {
-    app.post("/users", validateCreate, create(core));
+    app.post("/users", validateCreate(core), create(core));
   };
 };
