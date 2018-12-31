@@ -8,6 +8,10 @@ export type Handler = ((
   next: NextFunction,
 ) => Promise<void>);
 
+export interface AuthorizedRequest extends Request {
+  userId: number;
+}
+
 export interface IHandlerMap {
   [k: string]: ((req: Request, res: Response, next: NextFunction) => Promise<void>);
 }

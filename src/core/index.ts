@@ -10,12 +10,7 @@ import healthz from "../healthz";
 import logger from "../logger";
 import users from "../users";
 
-interface Crypto {
-  // tslint:disable-next-line:no-any
-  hash: (data: any, saltOrRounds: string | number) => Promise<string>;
-  // tslint:disable-next-line:no-any
-  compare: (data: any, encrypted: string) => Promise<boolean>;
-}
+// todo clean up this file
 
 export interface Core {
   db: Database;
@@ -32,6 +27,13 @@ export const bootstrap = (): Express => {
   app.use(globalErrorHandler);
   return app;
 };
+
+interface Crypto {
+  // tslint:disable-next-line:no-any
+  hash: (data: any, saltOrRounds: string | number) => Promise<string>;
+  // tslint:disable-next-line:no-any
+  compare: (data: any, encrypted: string) => Promise<boolean>;
+}
 
 const wireApp = (app: Express): void => {
   const core: Core = {
