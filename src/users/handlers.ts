@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Handler, response, AuthorizedRequest } from "../api";
+import { AuthorizedRequest, Handler, response } from "../api";
 import { Core } from "../core";
 import { find, insert } from "./repository";
 
