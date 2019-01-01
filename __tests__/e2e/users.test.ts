@@ -45,7 +45,7 @@ describe("POST /users", () => {
   });
 });
 
-describe("POST /users/me", () => {
+describe("GET /users/me", () => {
   test("it can get a user with a valid jwt", async (done: jest.DoneCallback) => {
     const app = bootstrap();
     const response = await request(app)
