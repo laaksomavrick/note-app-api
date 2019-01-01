@@ -1,6 +1,9 @@
 import { camelCase } from "change-case";
 import { Database } from "../db";
 
+/**
+ * Defines the shape of a User
+ */
 export interface User {
   id: number;
   email: string;
@@ -14,6 +17,9 @@ interface InsertUser {
   password: string;
 }
 
+/**
+ * Inserts a new user record into the database.
+ */
 export const insert = async (
   db: Database,
   { email, password }: InsertUser,
@@ -27,6 +33,9 @@ export const insert = async (
   return id;
 };
 
+/**
+ * Finds a user in the database given an id.
+ */
 export const find = async (db: Database, id: number): Promise<User | null> => {
   const { rows } = await db.query(`SELECT * FROM users WHERE id = $1`, [id]);
   // tslint:disable-next-line:no-any
@@ -44,6 +53,9 @@ export const find = async (db: Database, id: number): Promise<User | null> => {
   return user as User;
 };
 
+/**
+ * Finds a user in the database given an email.
+ */
 export const findByEmail = async (db: Database, email: string): Promise<User | null> => {
   const { rows } = await db.query(`SELECT * FROM users WHERE email = $1 LIMIT 1`, [
     email,

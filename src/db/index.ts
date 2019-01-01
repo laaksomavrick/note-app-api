@@ -1,6 +1,8 @@
 import pg from "pg";
 import config from "../config";
 
+// todo organize / comments / pull up?
+
 export interface Database {
   query: (text, params) => Promise<pg.QueryArrayResult>;
   end: () => Promise<void>;

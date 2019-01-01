@@ -14,6 +14,9 @@ import { bootstrap } from "./core";
 // cleanup of todos, organize files, comments on exported fns and files, clean mess
 // readme support; makefile commands; explanation; test deployment and how-to
 
+/**
+ * Boot the app :)
+ */
 const main = async (): Promise<void> => {
   const port = config.get("port") || 3000;
   const app = bootstrap();

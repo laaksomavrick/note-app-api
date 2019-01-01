@@ -7,7 +7,7 @@ import { ForbiddenError, NotFoundError } from "../errors";
 import { findByEmail } from "../users/repository";
 
 /**
- * Login
+ * Issues a JWT for a valid username and password.
  */
 export const create = ({ db, crypto }: Core): Handler => {
   return async (

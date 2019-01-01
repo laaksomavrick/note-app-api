@@ -4,6 +4,9 @@ import { Core } from "../core";
 import { ValidationError } from "../errors";
 import { findByEmail } from "./repository";
 
+/**
+ * Validates an incoming request for a unique email and valid password.
+ */
 export const validateCreate = ({ db }: Core): Handler => {
   return async (
     { body: { email = null, password = null } }: Request,
@@ -11,6 +14,7 @@ export const validateCreate = ({ db }: Core): Handler => {
     next: NextFunction,
   ): Promise<void> => {
     try {
+      // todo email regexp check
       const valid = email !== null && password !== null && password.length > 8;
       if (!valid) {
         throw new ValidationError();

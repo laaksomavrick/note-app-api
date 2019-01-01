@@ -1,25 +1,29 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
+import { responseError } from "../api";
 import { AuthorizedRequest } from "../api";
 import config from "../config";
-import { UnauthorizedError, ValidationError } from "../errors";
+import { UnauthorizedError } from "../errors";
 
-export const validateCreate = (
-  { body: { email = null, password = null } }: Request,
+/**
+ * The top level error handler for the app.
+ */
+export const globalErrorHandler = (
+  // tslint:disable-next-line:no-any
+  error: any,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): void => {
-  try {
-    const valid = email !== null && password !== null;
-    if (!valid) {
-      throw new ValidationError();
-    }
-    next();
-  } catch (error) {
-    next(error);
-  }
+  const status = error.status || 500;
+  responseError(res, error.toString(), status);
 };
 
+/**
+ * Middleware used for protecting routes requiring authorization.
+ * Checks the incoming request for a JWT. If it exists, populates the userId
+ * on the request.
+ */
 export const authorize = async (
   req: Request,
   res: Response,

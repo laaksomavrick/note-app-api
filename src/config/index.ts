@@ -1,5 +1,9 @@
 import convict from "convict";
 
+/**
+ * Module exposing the app-wide configuration object.
+ * Sets particular ENV key-value pairs for dev; test; prod.
+ */
 const config = convict({
   env: {
     doc: "",

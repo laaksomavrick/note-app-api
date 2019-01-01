@@ -3,6 +3,9 @@ import { AuthorizedRequest, Handler, response } from "../api";
 import { Core } from "../core";
 import { find, insert } from "./repository";
 
+/**
+ * Creates a user given a unique email and valid password.
+ */
 export const create = ({ db, crypto }: Core): Handler => {
   return async (
     { body: { email, password } }: Request,

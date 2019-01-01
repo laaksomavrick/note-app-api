@@ -1,6 +1,7 @@
 import winston from "winston";
 import config from "../config";
 
+// todo: clean up, comments, separate
 // todo: log requests, responses in file
 
 const logger = winston.createLogger({
