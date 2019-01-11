@@ -37,7 +37,7 @@ export const insert = async (
  * Finds a user in the database given an id.
  */
 export const find = async (db: Database, id: number): Promise<User | null> => {
-  const { rows } = await db.query(`SELECT * FROM users WHERE id = $1`, [id]);
+  const { rows } = await db.query(`SELECT * FROM users WHERE id = $1 LIMIT 1`, [id]);
   // tslint:disable-next-line:no-any
   const raw = (rows[0] as any) || null;
   if (!raw) {

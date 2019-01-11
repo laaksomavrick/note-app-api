@@ -3,7 +3,7 @@ import { verify } from "jsonwebtoken";
 import { responseError } from "../api";
 import { AuthorizedRequest } from "../api";
 import config from "../config";
-import { UnauthorizedError } from "../errors";
+import { UnauthorizedError, ForbiddenError } from "../errors";
 
 /**
  * The top level error handler for the app.
@@ -40,6 +40,26 @@ export const authorize = async (
     // tslint:disable-next-line:no-any
     const { id } = (await verify(token, config.get("secret.jwt"))) as any;
     (req as AuthorizedRequest).userId = id;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Middleware used for validaing the userId of a route parameter against an
+ * AuthorizedRequest's userId
+ */
+export const isUser = async (
+  { params: { userId: paramUserId }, userId: authorizedUserId }: AuthorizedRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    // todo test coverage
+    if (parseInt(paramUserId, 10) !== authorizedUserId) {
+      throw new ForbiddenError();
+    }
     next();
   } catch (error) {
     next(error);

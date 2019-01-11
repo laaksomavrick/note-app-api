@@ -5,6 +5,7 @@ import { Express } from "express";
 import morgan from "morgan";
 import auth from "../auth";
 import { db } from "../db";
+import folders from "../folders";
 import healthz from "../healthz";
 import logger from "../logger";
 import users from "../users";
@@ -27,6 +28,7 @@ const wireApp = (app: Express): void => {
     logger,
     crypto: bcrypt,
   };
+  folders(core)(app);
   users(core)(app);
   healthz(core)(app);
   auth(core)(app);
