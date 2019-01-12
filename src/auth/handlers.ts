@@ -11,7 +11,11 @@ import { findByEmail } from "../users/repository";
  */
 export const create = ({ db, crypto }: Core): Handler => {
   return async (
-    { body: { email, password } }: Request,
+    {
+      body: {
+        auth: { email, password },
+      },
+    }: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {

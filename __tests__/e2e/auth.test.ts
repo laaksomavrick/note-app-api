@@ -10,7 +10,7 @@ beforeAll(async () => {
 describe("/auth", () => {
   test("it can authorize a user", async (done: jest.DoneCallback) => {
     const app = bootstrap();
-    const payload = { email: "john.doe@gmail.com", password: "qweqweqwe" };
+    const payload = { auth: { email: "john.doe@gmail.com", password: "qweqweqwe" } };
     const response = await request(app)
       .post("/auth")
       .send(payload);
@@ -31,7 +31,7 @@ describe("/auth", () => {
 
   test("it rejects when the user doesn't exist", async (done: jest.DoneCallback) => {
     const app = bootstrap();
-    const payload = { email: "something@gmail.com", password: "qweqweqwe" };
+    const payload = { auth: { email: "something@gmail.com", password: "qweqweqwe" } };
     const response = await request(app)
       .post("/auth")
       .send(payload);
@@ -42,7 +42,7 @@ describe("/auth", () => {
   // tslint:disable-next-line:max-line-length
   test("it rejects when the wrong password is provided", async (done: jest.DoneCallback) => {
     const app = bootstrap();
-    const payload = { email: "john.doe@gmail.com", password: "notqweqweqwe" };
+    const payload = { auth: { email: "john.doe@gmail.com", password: "notqweqweqwe" } };
     const response = await request(app)
       .post("/auth")
       .send(payload);

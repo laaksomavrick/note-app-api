@@ -8,7 +8,11 @@ import { find, insert } from "./repository";
  */
 export const create = ({ db, crypto }: Core): Handler => {
   return async (
-    { body: { email, password } }: Request,
+    {
+      body: {
+        user: { email, password },
+      },
+    }: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {

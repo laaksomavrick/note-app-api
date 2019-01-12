@@ -47,3 +47,55 @@ describe("GET /users/:userId/folders", () => {
     done();
   });
 });
+
+describe("POST /users/:userId/folders", () => {
+  test("it can create a folder", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = { folder: { name: faker.lorem.word() } };
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(200);
+    expect(response.body.data.folder).toBeDefined();
+    done();
+  });
+
+  test("it cannot create a folder without a jwt", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = { folder: { name: faker.lorem.word() } };
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders`)
+      .send(payload);
+    expect(response.status).toBe(401);
+    done();
+  });
+
+  test("it cannot create a folder for another user", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = { folder: { name: faker.lorem.word() } };
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders`)
+      .set({
+        Authorization: janeDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(403);
+    done();
+  });
+
+  test("it cannot create a folder with a bad body", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {};
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(400);
+    done();
+  });
+});

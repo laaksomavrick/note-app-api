@@ -28,6 +28,7 @@ export const insert = async (
     `INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id`,
     [email, password],
   );
+  // todo: generic get id fn
   // tslint:disable-next-line:no-any
   const { id } = (rows[0] as any) || null;
   return id;

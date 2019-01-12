@@ -6,7 +6,7 @@ import { ValidationError } from "../errors";
  * A username and password should exist on an incoming request.
  */
 export const validateCreate = (
-  { body: { email = null, password = null } }: Request,
+  { body: { auth: { email = null, password = null } = {} } }: Request,
   res: Response,
   next: NextFunction,
 ): void => {

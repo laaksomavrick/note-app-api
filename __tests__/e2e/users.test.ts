@@ -12,7 +12,7 @@ beforeAll(async () => {
 describe("POST /users", () => {
   test("it can create a user", async (done: jest.DoneCallback) => {
     const app = bootstrap();
-    const payload = { email: faker.internet.email(), password: "qweqweqwe" };
+    const payload = { user: { email: faker.internet.email(), password: "qweqweqwe" } };
     const response = await request(app)
       .post("/users")
       .send(payload);
@@ -36,7 +36,7 @@ describe("POST /users", () => {
   // tslint:disable-next-line:max-line-length
   test("it fails create a user when the user already exists", async (done: jest.DoneCallback) => {
     const app = bootstrap();
-    const payload = { email: "john.doe@gmail.com", password: "qweqweqwe" };
+    const payload = { user: { email: "john.doe@gmail.com", password: "qweqweqwe" } };
     const response = await request(app)
       .post("/users")
       .send(payload);

@@ -7,9 +7,9 @@ import { findByEmail } from "./repository";
 /**
  * Validates an incoming request for a unique email and valid password.
  */
-export const validateCreate = ({ db }: Core): Handler => {
+export const validateUserInput = ({ db }: Core): Handler => {
   return async (
-    { body: { email = null, password = null } }: Request,
+    { body: { user: { email = null, password = null } = {} } }: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
