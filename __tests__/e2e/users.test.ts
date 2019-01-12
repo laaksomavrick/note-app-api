@@ -2,6 +2,7 @@ import faker from "faker";
 import request from "supertest";
 import { migrate, seed } from "../../lib/db/commands";
 import { bootstrap } from "../../src/core";
+import { johnDoeJwt } from "../helpers";
 
 beforeAll(async () => {
   await migrate();
@@ -51,13 +52,11 @@ describe("GET /users/me", () => {
     const response = await request(app)
       .get("/users/me")
       .set({
-        Authorization:
-          // todo: generate this via sign?
-          // tslint:disable-next-line:max-line-length
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNTQ2MjI2MDE2fQ.fK4rExPPq8affMje22cItCF4_9iFgmzCHCt42yB1h90",
+        Authorization: johnDoeJwt,
       });
     expect(response.status).toBe(200);
     expect(response.body.data.user).toBeDefined();
+    expect(response.body.data.user.email).toBeDefined();
     done();
   });
 

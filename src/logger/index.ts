@@ -17,6 +17,8 @@ const logger = winston.createLogger({
   ],
 });
 
+// todo fix output on tests
+
 //
 // If we're not in production then log to the `console` with the format:
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `

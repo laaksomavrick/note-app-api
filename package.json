@@ -17,7 +17,7 @@
     "db:seed": "ts-node -r tsconfig-paths/register lib/db/seed.ts",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:e2e": "jest --forceExit --runInBand --config ./test/jest-e2e.json",
+    "test:e2e": "jest --forceExit --runInBand",
     "webpack": "webpack --config webpack.config.js",
     "docker:prod:build": "docker build -t laaksomavrick/notesapi:latest .",
     "docker:prod:run": "docker run -p 3000:3000 notesapi:latest",

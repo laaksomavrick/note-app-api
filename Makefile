@@ -12,3 +12,6 @@ migrate:
 
 seed:
 	yarn db:seed
+
+test:
+	yarn test:e2e

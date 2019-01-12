@@ -7,8 +7,6 @@ beforeAll(async () => {
   await seed();
 });
 
-// do next: 12/28/2018; seeds, these tests, /me with auth middleware
-
 describe("/auth", () => {
   test("it can authorize a user", async (done: jest.DoneCallback) => {
     const app = bootstrap();
