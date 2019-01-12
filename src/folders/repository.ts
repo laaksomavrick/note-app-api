@@ -1,18 +1,12 @@
-import { camelCase } from "change-case";
-import { Database } from "../db";
+import { Database, getIdFromRows, parseRowsToType, RecordBase } from "../db";
 
-// todo syntax for select thing, thing2; generic for use across repos
-// todo universal get, find, ....
-
-export interface Folder {
+export interface Folder extends RecordBase {
   id: number;
   userId: number;
   name: string;
-  createdAt: string;
-  updatedAt: string; // todo Base
 }
 
-interface FolderInput {
+export interface FolderInput {
   name: string;
   userId: number;
 }
@@ -28,8 +22,7 @@ export const insert = async (
     `INSERT INTO folders (name, user_id) VALUES ($1, $2) RETURNING id`,
     [name, userId],
   );
-  // tslint:disable-next-line:no-any
-  const { id } = (rows[0] as any) || null;
+  const id = getIdFromRows(rows);
   return this.find(db, id);
 };
 
@@ -38,20 +31,13 @@ export const insert = async (
  */
 export const find = async (db: Database, id: number): Promise<Folder | null> => {
   const { rows } = await db.query(`SELECT * FROM folders WHERE id = $1 LIMIT 1`, [id]);
-  // tslint:disable-next-line:no-any
-  const raw = (rows[0] as any) || null;
-  if (!raw) {
-    return null;
-  }
-  const folder: Folder = {} as Folder;
-  const keys = Object.keys(raw);
-  for (const key of keys) {
-    const camelKey = camelCase(key);
-    folder[camelKey] = raw[key];
-  }
+  const [folder = null] = parseRowsToType<Folder>(rows);
   return folder;
 };
 
+/**
+ * Finds all folders belonging to a particular user.
+ */
 export const getFoldersForUser = async (
   db: Database,
   userId: number,
@@ -60,18 +46,6 @@ export const getFoldersForUser = async (
     `SELECT * FROM folders WHERE user_id = $1 ORDER BY id`,
     [userId],
   );
-  if (!rows) {
-    return null;
-  }
-  const folders: Folder[] = [];
-  for (const data of rows) {
-    const folder = {} as Folder;
-    const keys = Object.keys(data);
-    for (const key of keys) {
-      const camelKey = camelCase(key);
-      folder[camelKey] = data[key];
-    }
-    folders.push(folder);
-  }
+  const folders = parseRowsToType<Folder>(rows);
   return folders;
 };

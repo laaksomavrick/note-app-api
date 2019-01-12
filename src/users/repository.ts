@@ -1,15 +1,12 @@
-import { camelCase } from "change-case";
-import { Database } from "../db";
+import { Database, getIdFromRows, parseRowsToType, RecordBase } from "../db";
 
 /**
  * Defines the shape of a User
  */
-export interface User {
+export interface User extends RecordBase {
   id: number;
   email: string;
   password: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 interface InsertUser {
@@ -28,9 +25,7 @@ export const insert = async (
     `INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id`,
     [email, password],
   );
-  // todo: generic get id fn
-  // tslint:disable-next-line:no-any
-  const { id } = (rows[0] as any) || null;
+  const id = getIdFromRows(rows);
   return id;
 };
 
@@ -39,19 +34,8 @@ export const insert = async (
  */
 export const find = async (db: Database, id: number): Promise<User | null> => {
   const { rows } = await db.query(`SELECT * FROM users WHERE id = $1 LIMIT 1`, [id]);
-  // tslint:disable-next-line:no-any
-  const raw = (rows[0] as any) || null;
-  if (!raw) {
-    return null;
-  }
-  // todo pull this out into util fn for coercing <T>
-  const user: object = {};
-  const keys = Object.keys(raw);
-  for (const key of keys) {
-    const camelKey = camelCase(key);
-    user[camelKey] = raw[key];
-  }
-  return user as User;
+  const [user = null] = parseRowsToType<User>(rows);
+  return user;
 };
 
 /**
@@ -61,17 +45,6 @@ export const findByEmail = async (db: Database, email: string): Promise<User | n
   const { rows } = await db.query(`SELECT * FROM users WHERE email = $1 LIMIT 1`, [
     email,
   ]);
-  // tslint:disable-next-line:no-any
-  const raw = (rows[0] as any) || null;
-  if (!raw) {
-    return null;
-  }
-  // todo pull this out into util fn for coercing <T>
-  const user: object = {};
-  const keys = Object.keys(raw);
-  for (const key of keys) {
-    const camelKey = camelCase(key);
-    user[camelKey] = raw[key];
-  }
-  return user as User;
+  const [user = null] = parseRowsToType<User>(rows);
+  return user;
 };

@@ -3,7 +3,7 @@ import { verify } from "jsonwebtoken";
 import { responseError } from "../api";
 import { AuthorizedRequest } from "../api";
 import config from "../config";
-import { UnauthorizedError, ForbiddenError } from "../errors";
+import { ForbiddenError, UnauthorizedError } from "../errors";
 
 /**
  * The top level error handler for the app.
