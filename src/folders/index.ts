@@ -1,6 +1,6 @@
 import { Express } from "express";
 import { authorize, Core, isUser } from "../core";
-import { create, get, update } from "./handlers";
+import { create, destroy, get, update } from "./handlers";
 import {
   validateFolderExists,
   validateFolderInputForCreate,
@@ -27,6 +27,13 @@ export default (core: Core): ((app: Express) => void) => {
       validateFolderExists(core),
       validateFolderInputForUpdate,
       update(core),
+    );
+    app.delete(
+      "/users/:userId/folders/:folderId",
+      authorize,
+      isUser,
+      validateFolderExists(core),
+      destroy(core),
     );
   };
 };

@@ -64,3 +64,10 @@ export const updateFolder = async (
   const id = getIdFromRows(rows);
   return this.find(db, id);
 };
+
+/**
+ * Destroys a folder given an id.
+ */
+export const destroyFolder = async (db: Database, folderId: number): Promise<void> => {
+  await db.query(`DELETE FROM folders WHERE id = $1`, [folderId]);
+};

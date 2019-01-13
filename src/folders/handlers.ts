@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { AuthorizedRequest, Handler, response } from "../api";
 import { Core } from "../core";
 import { AuthorizedFolderRequest } from "./defs";
-import { getFoldersForUser, insert, updateFolder } from "./repository";
+import { destroyFolder, getFoldersForUser, insert, updateFolder } from "./repository";
 
 /**
  * Retrieve all folders belonging to a user.
@@ -62,6 +62,24 @@ export const update = ({ db }: Core): Handler => {
     try {
       const folder = await updateFolder(db, { id: folderId, name });
       response(res, { folder });
+    } catch (error) {
+      next(error);
+    }
+  };
+};
+
+/**
+ * Delete a folder.
+ */
+export const destroy = ({ db }: Core): Handler => {
+  return async (
+    { folderId }: AuthorizedFolderRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      await destroyFolder(db, folderId);
+      response(res, {});
     } catch (error) {
       next(error);
     }

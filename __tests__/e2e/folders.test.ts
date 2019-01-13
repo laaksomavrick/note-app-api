@@ -167,4 +167,48 @@ describe("POST /users/:userId/folders", () => {
       done();
     });
   });
+
+  describe("DELETE /users/:userId/folders/:folderId", () => {
+    test("it can delete a folder", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const response = await request(app)
+        .delete(`/users/${johnDoeUserId}/folders/1`)
+        .set({ Authorization: johnDoeJwt })
+        .send();
+      expect(response.status).toBe(200);
+      done();
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("it cannot delete a folder if not authorized", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const response = await request(app)
+        .delete(`/users/${johnDoeUserId}/folders/1`)
+        .send();
+      expect(response.status).toBe(401);
+      done();
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("it cannot delete a folder that doesn't belong to the user", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const response = await request(app)
+        .delete(`/users/${johnDoeUserId}/folders/1`)
+        .set({ Authorization: janeDoeJwt })
+        .send();
+      expect(response.status).toBe(403);
+      done();
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("it cannot delete a folder that doesn't exist", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const response = await request(app)
+        .delete(`/users/${johnDoeUserId}/folders/0`)
+        .set({ Authorization: johnDoeJwt })
+        .send();
+      expect(response.status).toBe(404);
+      done();
+    });
+  });
 });
