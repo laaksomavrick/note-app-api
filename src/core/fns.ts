@@ -4,6 +4,7 @@ import express from "express";
 import { Express } from "express";
 import morgan from "morgan";
 import auth from "../auth";
+import config from "../config";
 import { db } from "../db";
 import folders from "../folders";
 import healthz from "../healthz";
@@ -16,7 +17,9 @@ export const bootstrap = (): Express => {
   const app = express();
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-  app.use(morgan("combined")); // todo write to file in prod
+  if (config.get("env") !== "test") {
+    app.use(morgan("combined")); // todo write to file in prod
+  }
   wireApp(app);
   app.use(globalErrorHandler);
   return app;
