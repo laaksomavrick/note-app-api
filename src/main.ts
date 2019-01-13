@@ -1,19 +1,6 @@
 import config from "./config";
 import { bootstrap } from "./core";
 
-// ddd
-// ioc/di pattern
-// handler/repo
-// tests
-// migrations
-// seeds
-// create user
-// auth user
-// auth middleware
-// generic: authorized?; valid?; handle -> service? -> repo; res
-// cleanup of todos, organize files, comments on exported fns and files, clean mess
-// readme support; makefile commands; explanation; test deployment and how-to
-
 /**
  * Boot the app :)
  */

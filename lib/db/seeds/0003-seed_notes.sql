@@ -1,0 +1,31 @@
+TRUNCATE TABLE notes CASCADE;
+INSERT INTO notes (user_id, folder_id, name, content)
+VALUES
+('1', '1', 'note name', 'note content'),
+('1', '1', 'note name', 'note content'),
+('1', '1', 'note name', 'note content'),
+('1', '2', 'note name', 'note content'),
+('1', '2', 'note name', 'note content'),
+('1', '2', 'note name', 'note content'),
+('1', '3', 'note name', 'note content'),
+('1', '3', 'note name', 'note content'),
+('1', '3', 'note name', 'note content'),
+('2', '4', 'note name', 'note content'),
+('2', '4', 'note name', 'note content'),
+('2', '4', 'note name', 'note content'),
+('2', '5', 'note name', 'note content'),
+('2', '5', 'note name', 'note content'),
+('2', '5', 'note name', 'note content'),
+('2', '6', 'note name', 'note content'),
+('2', '6', 'note name', 'note content'),
+('2', '6', 'note name', 'note content'),
+('3', '7', 'note name', 'note content'),
+('3', '7', 'note name', 'note content'),
+('3', '7', 'note name', 'note content'),
+('3', '8', 'note name', 'note content'),
+('3', '8', 'note name', 'note content'),
+('3', '8', 'note name', 'note content'),
+('3', '9', 'note name', 'note content'),
+('3', '9', 'note name', 'note content'),
+('3', '9', 'note name', 'note content')
+;
