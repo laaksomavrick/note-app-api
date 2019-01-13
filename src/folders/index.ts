@@ -1,7 +1,11 @@
 import { Express } from "express";
 import { authorize, Core, isUser } from "../core";
-import { create, get } from "./handlers";
-import { validateFolderInput } from "./middlewares";
+import { create, get, update } from "./handlers";
+import {
+  validateFolderExists,
+  validateFolderInputForCreate,
+  validateFolderInputForUpdate,
+} from "./middlewares";
 
 /**
  * Module exposing folder routes and their handlers.
@@ -13,8 +17,16 @@ export default (core: Core): ((app: Express) => void) => {
       "/users/:userId/folders",
       authorize,
       isUser,
-      validateFolderInput,
+      validateFolderInputForCreate,
       create(core),
+    );
+    app.patch(
+      "/users/:userId/folders/:folderId",
+      authorize,
+      isUser,
+      validateFolderExists(core),
+      validateFolderInputForUpdate,
+      update(core),
     );
   };
 };

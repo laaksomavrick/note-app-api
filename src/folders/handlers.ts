@@ -1,8 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthorizedRequest, Handler, response } from "../api";
 import { Core } from "../core";
-import { getFoldersForUser, insert } from "./repository";
+import { AuthorizedFolderRequest } from "./defs";
+import { getFoldersForUser, insert, updateFolder } from "./repository";
 
+/**
+ * Retrieve all folders belonging to a user.
+ */
 export const get = ({ db }: Core): Handler => {
   return async (
     { userId }: AuthorizedRequest,
@@ -18,6 +22,9 @@ export const get = ({ db }: Core): Handler => {
   };
 };
 
+/**
+ * Create a new folder.
+ */
 export const create = ({ db }: Core): Handler => {
   return async (
     {
@@ -31,6 +38,29 @@ export const create = ({ db }: Core): Handler => {
   ): Promise<void> => {
     try {
       const folder = await insert(db, { name, userId });
+      response(res, { folder });
+    } catch (error) {
+      next(error);
+    }
+  };
+};
+
+/**
+ * Update a folder.
+ */
+export const update = ({ db }: Core): Handler => {
+  return async (
+    {
+      body: {
+        folder: { name = null },
+      },
+      folderId,
+    }: AuthorizedFolderRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const folder = await updateFolder(db, { id: folderId, name });
       response(res, { folder });
     } catch (error) {
       next(error);

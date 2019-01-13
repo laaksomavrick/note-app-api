@@ -98,4 +98,73 @@ describe("POST /users/:userId/folders", () => {
     expect(response.status).toBe(400);
     done();
   });
+
+  describe("PATCH /users/:userId/folders/:folderId", () => {
+    test("it can update a folder", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const payload = { folder: { name: faker.lorem.word() } };
+      const response = await request(app)
+        .patch(`/users/${johnDoeUserId}/folders/1`)
+        .set({
+          Authorization: johnDoeJwt,
+        })
+        .send(payload);
+      expect(response.status).toBe(200);
+      expect(response.body.data.folder).toBeDefined();
+      done();
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("it cannot update a folder if not authorized", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const payload = { folder: { name: faker.lorem.word() } };
+      const response = await request(app)
+        .patch(`/users/${johnDoeUserId}/folders/1`)
+        .send(payload);
+      expect(response.status).toBe(401);
+      done();
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("it cannot update a folder that doesn't belong to the user", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const payload = { folder: { name: faker.lorem.word() } };
+      const response = await request(app)
+        .patch(`/users/${johnDoeUserId}/folders/1`)
+        .set({
+          Authorization: janeDoeJwt,
+        })
+        .send(payload);
+      expect(response.status).toBe(403);
+      done();
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("it cannot update a folder that doesn't exist", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const payload = { folder: { name: faker.lorem.word() } };
+      const response = await request(app)
+        .patch(`/users/${johnDoeUserId}/folders/0`)
+        .set({
+          Authorization: johnDoeJwt,
+        })
+        .send(payload);
+      expect(response.status).toBe(404);
+      done();
+    });
+
+    // tslint:disable-next-line:max-line-length
+    test("it cannot update a folder without a valid request", async (done: jest.DoneCallback) => {
+      const app = bootstrap();
+      const payload = {};
+      const response = await request(app)
+        .patch(`/users/${johnDoeUserId}/folders/1`)
+        .set({
+          Authorization: johnDoeJwt,
+        })
+        .send(payload);
+      expect(response.status).toBe(400);
+      done();
+    });
+  });
 });

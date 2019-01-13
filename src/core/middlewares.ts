@@ -56,7 +56,6 @@ export const isUser = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    // todo test coverage
     if (parseInt(paramUserId, 10) !== authorizedUserId) {
       throw new ForbiddenError();
     }

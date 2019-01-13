@@ -49,3 +49,18 @@ export const getFoldersForUser = async (
   const folders = parseRowsToType<Folder>(rows);
   return folders;
 };
+
+/**
+ * Updates a folder given an id.
+ */
+export const updateFolder = async (
+  db: Database,
+  { id: folderId, name }: { id: number; name: string },
+): Promise<Folder | null> => {
+  const { rows } = await db.query(
+    `UPDATE folders SET name = $1 WHERE id = $2 RETURNING id`,
+    [name, folderId],
+  );
+  const id = getIdFromRows(rows);
+  return this.find(db, id);
+};

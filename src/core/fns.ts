@@ -13,6 +13,8 @@ import users from "../users";
 import { Core } from "./defs";
 import { globalErrorHandler } from "./middlewares";
 
+// todo: default request timeout
+
 export const bootstrap = (): Express => {
   const app = express();
   app.use(bodyParser.urlencoded({ extended: true }));
