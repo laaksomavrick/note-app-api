@@ -67,7 +67,9 @@ export const updateFolder = async (
 
 /**
  * Destroys a folder given an id.
+ * // todo: set visible to false instead (soft deletes)?
  */
 export const destroyFolder = async (db: Database, folderId: number): Promise<void> => {
+  await db.query(`DELETE FROM notes WHERE folder_id = $1`, [folderId]);
   await db.query(`DELETE FROM folders WHERE id = $1`, [folderId]);
 };

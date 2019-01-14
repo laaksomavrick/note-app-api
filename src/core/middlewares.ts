@@ -37,6 +37,9 @@ export const authorize = async (
       throw new UnauthorizedError();
     }
     const token = authorization.split("Bearer ")[1];
+    if (!token) {
+      throw new UnauthorizedError();
+    }
     // tslint:disable-next-line:no-any
     const { id } = (await verify(token, config.get("secret.jwt"))) as any;
     (req as AuthorizedRequest).userId = id;
