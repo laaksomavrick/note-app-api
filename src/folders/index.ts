@@ -2,7 +2,7 @@ import { Express } from "express";
 import { authorize, Core, isUser } from "../core";
 import { create, destroy, get, update } from "./handlers";
 import {
-  validateFolderExists,
+  validateFolderBelongsToUser,
   validateFolderInputForCreate,
   validateFolderInputForUpdate,
 } from "./middlewares";
@@ -24,7 +24,7 @@ export default (core: Core): ((app: Express) => void) => {
       "/users/:userId/folders/:folderId",
       authorize,
       isUser,
-      validateFolderExists(core),
+      validateFolderBelongsToUser(core),
       validateFolderInputForUpdate,
       update(core),
     );
@@ -32,7 +32,7 @@ export default (core: Core): ((app: Express) => void) => {
       "/users/:userId/folders/:folderId",
       authorize,
       isUser,
-      validateFolderExists(core),
+      validateFolderBelongsToUser(core),
       destroy(core),
     );
   };

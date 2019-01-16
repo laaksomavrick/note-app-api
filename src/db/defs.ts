@@ -20,6 +20,7 @@ export type QueryResult = any[][];
  * Base interface for records returned from the database.
  */
 export interface RecordBase {
+  id: number;
   createdAt: string;
   updatedAt: string;
 }

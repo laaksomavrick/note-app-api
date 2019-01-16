@@ -1,7 +1,6 @@
 import { Database, getIdFromRows, parseRowsToType, RecordBase } from "../db";
 
 export interface Folder extends RecordBase {
-  id: number;
   userId: number;
   name: string;
 }

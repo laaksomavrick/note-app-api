@@ -4,7 +4,6 @@ import { Database, getIdFromRows, parseRowsToType, RecordBase } from "../db";
  * Defines the shape of a User
  */
 export interface User extends RecordBase {
-  id: number;
   email: string;
   password: string;
 }

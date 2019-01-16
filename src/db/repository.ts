@@ -26,7 +26,7 @@ export const parseRowsToType = <T>(rows: QueryResult): T[] => {
     const keys = Object.keys(row);
     for (const key of keys) {
       const camelKey = camelCase(key);
-      obj[camelKey] = raw[key];
+      obj[camelKey] = row[key];
     }
     return obj;
   });

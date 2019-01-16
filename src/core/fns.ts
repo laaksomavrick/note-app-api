@@ -9,6 +9,7 @@ import { db } from "../db";
 import folders from "../folders";
 import healthz from "../healthz";
 import logger from "../logger";
+import notes from "../notes";
 import users from "../users";
 import { Core } from "./defs";
 import { globalErrorHandler } from "./middlewares";
@@ -33,6 +34,8 @@ const wireApp = (app: Express): void => {
     logger,
     crypto: bcrypt,
   };
+  // todo put these in array, inject with loop
+  notes(core)(app);
   folders(core)(app);
   users(core)(app);
   healthz(core)(app);
