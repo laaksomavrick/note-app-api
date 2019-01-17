@@ -1,3 +1,4 @@
+import { PoolClient } from "pg";
 import { Database, getIdFromRows, parseRowsToType, RecordBase } from "../db";
 
 /**
@@ -72,6 +73,9 @@ export const updateFolder = async (
  * // todo: set visible to false instead (soft deletes)?
  */
 export const destroyFolder = async (db: Database, folderId: number): Promise<void> => {
-  await db.query(`DELETE FROM notes WHERE folder_id = $1`, [folderId]);
-  await db.query(`DELETE FROM folders WHERE id = $1`, [folderId]);
+  const queries = async (client: PoolClient): Promise<void> => {
+    await client.query(`DELETE FROM notes WHERE folder_id = $1`, [folderId]);
+    await client.query(`DELETE FROM folders WHERE id = $1`, [folderId]);
+  };
+  await db.transaction(queries);
 };

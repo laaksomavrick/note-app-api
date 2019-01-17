@@ -6,8 +6,10 @@ import pg from "pg";
 export interface Database {
   query: (text, params) => Promise<pg.QueryArrayResult>;
   end: () => Promise<void>;
-  connect: () => Promise<pg.PoolClient>;
+  client: () => Promise<pg.PoolClient>;
   ping: () => Promise<boolean>;
+  // tslint:disable-next-line:no-any
+  transaction: (statements: (client: pg.PoolClient) => Promise<any>) => Promise<any>;
 }
 
 /**
