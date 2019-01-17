@@ -15,6 +15,7 @@ import { Core } from "./defs";
 import { globalErrorHandler } from "./middlewares";
 
 // todo: default request timeout
+// todo: rename this file core.ts
 
 export const bootstrap = (): Express => {
   const app = express();

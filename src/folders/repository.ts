@@ -1,10 +1,13 @@
 import { Database, getIdFromRows, parseRowsToType, RecordBase } from "../db";
 
-export interface Folder extends RecordBase {
-  userId: number;
-  name: string;
-}
+/**
+ * The shape of a folder record from the database.
+ */
+export interface Folder extends RecordBase, FolderInput {}
 
+/**
+ * The shape of an input object to create a new folder.
+ */
 export interface FolderInput {
   name: string;
   userId: number;
