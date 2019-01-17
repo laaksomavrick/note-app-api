@@ -1,7 +1,7 @@
+import faker from "faker";
 import request from "supertest";
 import { migrate, seed } from "../../lib/db/commands";
 import { bootstrap } from "../../src/core";
-import { Folder } from "../../src/folders/repository";
 import { janeDoeJwt, johnDoeJwt, johnDoeUserId } from "../helpers";
 
 beforeAll(async () => {
@@ -9,9 +9,9 @@ beforeAll(async () => {
   await seed();
 });
 
-describe("GET /users/:userId/folders/:folderId/notes", () => {
+describe("GET /users/:userId/notes/:folderId/notes", () => {
   // tslint:disable-next-line:max-line-length
-  test("it can get notes belonging to a user and folder", async (done: jest.DoneCallback) => {
+  test("it can get notes belonging to a user and note", async (done: jest.DoneCallback) => {
     const app = bootstrap();
     const response = await request(app)
       .get(`/users/${johnDoeUserId}/folders/1/notes`)
@@ -21,10 +21,6 @@ describe("GET /users/:userId/folders/:folderId/notes", () => {
       .send();
     expect(response.status).toBe(200);
     expect(response.body.data.notes).toBeDefined();
-    // todo: move this to a fn; copied
-    expect([
-      ...new Set(response.body.data.notes.map((folder: Folder) => folder.userId)),
-    ]).toEqual([1]);
     done();
   });
 
@@ -49,13 +45,87 @@ describe("GET /users/:userId/folders/:folderId/notes", () => {
   });
 
   // tslint:disable-next-line:max-line-length
-  test("it cannot get notes that don't belong to the user via folderId", async (done: jest.DoneCallback) => {
+  test("it cannot get notes that don't belong to the user via noteId", async (done: jest.DoneCallback) => {
     const app = bootstrap();
     const response = await request(app)
       .get(`/users/${johnDoeUserId}/folders/9/notes`)
       .set({ Authorization: johnDoeJwt })
       .send();
     expect(response.status).toBe(403);
+    done();
+  });
+});
+
+describe("POST /users/:userId/notes/:folderId/notes", () => {
+  test("it can create a note", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { name: faker.lorem.word(), content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders/1/notes`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(200);
+    expect(response.body.data.note).toBeDefined();
+    done();
+  });
+
+  test("it cannot create a note without a jwt", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { name: faker.lorem.word(), content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders/1/notes`)
+      .send(payload);
+    expect(response.status).toBe(401);
+    done();
+  });
+
+  test("it cannot create a note for another user", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { name: faker.lorem.word(), content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders/1/notes`)
+      .set({
+        Authorization: janeDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(403);
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot create a note for a folder belonging to another user", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { name: faker.lorem.word(), content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders/9/notes`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(403);
+    done();
+  });
+
+  test("it cannot create a note with a bad body", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {};
+    const response = await request(app)
+      .post(`/users/${johnDoeUserId}/folders/1/notes`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(400);
     done();
   });
 });
