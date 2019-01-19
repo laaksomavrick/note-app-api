@@ -1,4 +1,10 @@
-import { Database, getIdFromRows, parseRowsToType, RecordBase } from "../db";
+import {
+  Database,
+  getIdFromRows,
+  parseRowsToType,
+  RecordBase,
+  updateTemplateStringAndArgs,
+} from "../db";
 
 /**
  * The shape of a note record from the database.
@@ -52,4 +58,18 @@ export const findNote = async (db: Database, id: number): Promise<Note | null> =
   const { rows } = await db.query(`SELECT * FROM notes WHERE id = $1 LIMIT 1`, [id]);
   const [note = null] = parseRowsToType<Note>(rows);
   return note;
+};
+
+/**
+ * Updates a folder given an id.
+ */
+export const updateNote = async (
+  db: Database,
+  noteId: number,
+  input: { name: string; content: string },
+): Promise<Note | null> => {
+  const { template, args } = updateTemplateStringAndArgs("notes", noteId, input);
+  const { rows } = await db.query(template, args);
+  const id = getIdFromRows(rows);
+  return this.findNote(db, id);
 };

@@ -129,3 +129,96 @@ describe("POST /users/:userId/notes/:folderId/notes", () => {
     done();
   });
 });
+
+describe("PATCH /users/:userId/folders/:folderId/notes/:noteId", () => {
+  test("it can update a note", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { name: faker.lorem.word(), content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .patch(`/users/${johnDoeUserId}/folders/1/notes/1`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(200);
+    expect(response.body.data.note).toBeDefined();
+    done();
+  });
+
+  test("it can partially update a note", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .patch(`/users/${johnDoeUserId}/folders/1/notes/1`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(200);
+    expect(response.body.data.note).toBeDefined();
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot update a note if not authorized", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { name: faker.lorem.word(), content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .patch(`/users/${johnDoeUserId}/folders/1/notes/1`)
+      .send(payload);
+    expect(response.status).toBe(401);
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot update a note that doesn't belong to the user", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { name: faker.lorem.word(), content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .patch(`/users/${johnDoeUserId}/folders/1/notes/1`)
+      .set({
+        Authorization: janeDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(403);
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot update a note that doesn't exist", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {
+      note: { name: faker.lorem.word(), content: faker.lorem.paragraph() },
+    };
+    const response = await request(app)
+      .patch(`/users/${johnDoeUserId}/folders/1/notes/0`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(404);
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot update a note without a valid request", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const payload = {};
+    const response = await request(app)
+      .patch(`/users/${johnDoeUserId}/folders/1/notes/1`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send(payload);
+    expect(response.status).toBe(400);
+    done();
+  });
+});

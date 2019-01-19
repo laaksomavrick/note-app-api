@@ -15,11 +15,11 @@ export const response = (res: Response, data: object, status: number = 200): voi
  */
 export const responseError = (
   res: Response,
-  error: string,
+  error: Error,
   status: number = 500,
 ): void => {
   res.status(status).send({
     status,
-    error,
+    error: error.toString(),
   });
 };

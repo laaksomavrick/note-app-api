@@ -16,7 +16,7 @@ export const globalErrorHandler = (
   next: NextFunction,
 ): void => {
   const status = error.status || 500;
-  responseError(res, error.toString(), status);
+  responseError(res, error, status);
 };
 
 /**

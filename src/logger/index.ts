@@ -4,6 +4,13 @@ import config from "../config";
 // todo: clean up, comments, separate
 // todo: log requests, responses in file
 
+const errorStackTracerFormat = winston.format(info => {
+  if (info.meta && info.meta instanceof Error) {
+    info.message = `${info.message} ${info.meta.stack}`;
+  }
+  return info;
+});
+
 //
 // - Write to all logs with level `info` and below to `combined.log`
 // - Write all logs error (and below) to `error.log`.
@@ -17,8 +24,11 @@ const transports =
     : [];
 
 const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
+  format: winston.format.combine(
+    winston.format.splat(), // Necessary to produce the 'meta' attribute
+    errorStackTracerFormat(),
+    winston.format.json(),
+  ),
   transports,
 });
 

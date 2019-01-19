@@ -1,8 +1,12 @@
 import { Express } from "express";
 import { authorize, Core, isUser } from "../core";
 import { validateFolderBelongsToUser } from "../folders/middlewares";
-import { create, get } from "./handlers";
-import { validateNoteInputForCreate } from "./middlewares";
+import { create, get, update } from "./handlers";
+import {
+  validateNoteBelongsToUser,
+  validateNoteInputForCreate,
+  validateNoteInputForUpdate,
+} from "./middlewares";
 
 /**
  * Module exposing note routes and their handlers
@@ -23,6 +27,15 @@ export default (core: Core): ((app: Express) => void) => {
       validateFolderBelongsToUser(core),
       validateNoteInputForCreate,
       create(core),
+    );
+    app.patch(
+      "/users/:userId/folders/:folderId/notes/:noteId",
+      authorize,
+      isUser,
+      validateFolderBelongsToUser(core),
+      validateNoteBelongsToUser(core),
+      validateNoteInputForUpdate,
+      update(core),
     );
   };
 };
