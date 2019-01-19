@@ -32,7 +32,6 @@ export default (core: Core): ((app: Express) => void) => {
       "/users/:userId/folders/:folderId/notes/:noteId",
       authorize,
       isUser,
-      validateFolderBelongsToUser(core),
       validateNoteBelongsToUser(core),
       validateNoteInputForUpdate,
       update(core),
@@ -41,7 +40,6 @@ export default (core: Core): ((app: Express) => void) => {
       "/users/:userId/folders/:folderId/notes/:noteId",
       authorize,
       isUser,
-      validateFolderBelongsToUser(core),
       validateNoteBelongsToUser(core),
       destroy(core),
     );
