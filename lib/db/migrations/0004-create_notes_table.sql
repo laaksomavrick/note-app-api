@@ -12,6 +12,9 @@ CREATE TABLE IF NOT EXISTS notes (
     FOREIGN KEY (folder_id) REFERENCES folders (id)
 );
 
+CREATE INDEX notes_idx_user_id ON notes (user_id);
+CREATE INDEX notes_idx_folder_id ON notes (folder_id);
+
 ALTER SEQUENCE notes_id_seq RESTART WITH 1;
 
 CREATE TRIGGER set_updated_at
