@@ -16,7 +16,7 @@ interface InsertUser {
 /**
  * Inserts a new user record into the database.
  */
-export const insert = async (
+export const createUser = async (
   db: Database,
   { email, password }: InsertUser,
 ): Promise<number> => {
@@ -31,7 +31,7 @@ export const insert = async (
 /**
  * Finds a user in the database given an id.
  */
-export const find = async (db: Database, id: number): Promise<User | null> => {
+export const findUser = async (db: Database, id: number): Promise<User | null> => {
   const { rows } = await db.query(`SELECT * FROM users WHERE id = $1 LIMIT 1`, [id]);
   const [user = null] = parseRowsToType<User>(rows);
   return user;

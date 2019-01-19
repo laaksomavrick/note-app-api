@@ -1,8 +1,13 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { AuthorizedRequest, Handler, response } from "../api";
 import { Core } from "../core";
 import { AuthorizedFolderRequest } from "./defs";
-import { destroyFolder, getFoldersForUser, insert, updateFolder } from "./repository";
+import {
+  createFolder,
+  destroyFolder,
+  getFoldersForUser,
+  updateFolder,
+} from "./repository";
 
 /**
  * Retrieve all folders belonging to a user.
@@ -37,7 +42,7 @@ export const create = ({ db }: Core): Handler => {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const folder = await insert(db, { name, userId });
+      const folder = await createFolder(db, { name, userId });
       response(res, { folder });
     } catch (error) {
       next(error);

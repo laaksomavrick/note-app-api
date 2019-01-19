@@ -3,7 +3,7 @@ import { AuthorizedRequest, Handler } from "../api";
 import { Core } from "../core";
 import { ForbiddenError, NotFoundError, ValidationError } from "../errors";
 import { AuthorizedFolderRequest } from "./defs";
-import { find } from "./repository";
+import { findFolder } from "./repository";
 
 /**
  * Validates an incoming request for a name.
@@ -58,7 +58,7 @@ export const validateFolderBelongsToUser = ({ db }: Core): Handler => {
       const {
         params: { folderId, userId },
       } = req;
-      const folder = await find(db, folderId);
+      const folder = await findFolder(db, folderId);
       if (!folder) {
         throw new NotFoundError();
       }

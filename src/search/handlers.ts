@@ -4,7 +4,7 @@ import { Core } from "../core";
 import { searchNotes } from "./repository";
 
 /**
- * Retrieve all notes belonging to a folder.
+ * Retrieve all notes matching the search criteria.
  */
 export const get = ({ db }: Core): Handler => {
   return async (

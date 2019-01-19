@@ -17,7 +17,7 @@ export interface FolderInput {
 /**
  * Inserts a new folder record into the database and returns the folder.
  */
-export const insert = async (
+export const createFolder = async (
   db: Database,
   { name, userId }: FolderInput,
 ): Promise<Folder> => {
@@ -26,13 +26,13 @@ export const insert = async (
     [name, userId],
   );
   const id = getIdFromRows(rows);
-  return this.find(db, id);
+  return this.findFolder(db, id);
 };
 
 /**
  * Finds a folder in the database given an id.
  */
-export const find = async (db: Database, id: number): Promise<Folder | null> => {
+export const findFolder = async (db: Database, id: number): Promise<Folder | null> => {
   const { rows } = await db.query(`SELECT * FROM folders WHERE id = $1 LIMIT 1`, [id]);
   const [folder = null] = parseRowsToType<Folder>(rows);
   return folder;
@@ -65,7 +65,7 @@ export const updateFolder = async (
     [name, folderId],
   );
   const id = getIdFromRows(rows);
-  return this.find(db, id);
+  return this.findFolder(db, id);
 };
 
 /**

@@ -3,7 +3,7 @@ import { AuthorizedRequest } from "../api";
 import { ValidationError } from "../errors";
 
 /**
- * Validates an incoming request to create a note.
+ * Validates an incoming request to search notes.
  */
 export const validateSearchInput = async (
   { body: { search: { query = null } = {} } }: AuthorizedRequest,
