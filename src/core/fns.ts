@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
-import express from "express";
-import { Express } from "express";
+import express, { Express } from "express";
 import morgan from "morgan";
 import auth from "../auth";
 import config from "../config";
@@ -10,6 +9,7 @@ import folders from "../folders";
 import healthz from "../healthz";
 import logger from "../logger";
 import notes from "../notes";
+import search from "../search";
 import users from "../users";
 import { Core } from "./defs";
 import { globalErrorHandler } from "./middlewares";
@@ -36,6 +36,7 @@ const wireApp = (app: Express): void => {
     crypto: bcrypt,
   };
   // todo put these in array, inject with loop
+  search(core)(app);
   notes(core)(app);
   folders(core)(app);
   users(core)(app);

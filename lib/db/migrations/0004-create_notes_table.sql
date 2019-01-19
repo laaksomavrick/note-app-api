@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS notes (
 
 CREATE INDEX notes_idx_user_id ON notes (user_id);
 CREATE INDEX notes_idx_folder_id ON notes (folder_id);
+CREATE INDEX notes_idx_tsvector_content ON notes USING GIN (to_tsvector('english', content));
 
 ALTER SEQUENCE notes_id_seq RESTART WITH 1;
 
