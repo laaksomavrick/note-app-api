@@ -73,3 +73,11 @@ export const updateNote = async (
   const id = getIdFromRows(rows);
   return this.findNote(db, id);
 };
+
+/**
+ * Destroys a note given an id.
+ * // todo: set visible to false instead (soft deletes)?
+ */
+export const destroyNote = async (db: Database, noteId: number): Promise<void> => {
+  await db.query(`DELETE FROM notes WHERE id = $1`, [noteId]);
+};

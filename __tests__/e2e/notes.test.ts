@@ -222,3 +222,47 @@ describe("PATCH /users/:userId/folders/:folderId/notes/:noteId", () => {
     done();
   });
 });
+
+describe("DELETE /users/:userId/folders/:folderId/notes/:noteId", () => {
+  test("it can delete a note", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const response = await request(app)
+      .delete(`/users/${johnDoeUserId}/folders/1/notes/1`)
+      .set({ Authorization: johnDoeJwt })
+      .send();
+    expect(response.status).toBe(200);
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot delete a note if not authorized", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const response = await request(app)
+      .delete(`/users/${johnDoeUserId}/folders/1/notes/1`)
+      .send();
+    expect(response.status).toBe(401);
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot delete a note that doesn't belong to the user", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const response = await request(app)
+      .delete(`/users/${johnDoeUserId}/folders/1/notes/1`)
+      .set({ Authorization: janeDoeJwt })
+      .send();
+    expect(response.status).toBe(403);
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot delete a note that doesn't exist", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const response = await request(app)
+      .delete(`/users/${johnDoeUserId}/folders/1/notes/0`)
+      .set({ Authorization: johnDoeJwt })
+      .send();
+    expect(response.status).toBe(404);
+    done();
+  });
+});

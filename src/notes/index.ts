@@ -1,7 +1,7 @@
 import { Express } from "express";
 import { authorize, Core, isUser } from "../core";
 import { validateFolderBelongsToUser } from "../folders/middlewares";
-import { create, get, update } from "./handlers";
+import { create, destroy, get, update } from "./handlers";
 import {
   validateNoteBelongsToUser,
   validateNoteInputForCreate,
@@ -36,6 +36,14 @@ export default (core: Core): ((app: Express) => void) => {
       validateNoteBelongsToUser(core),
       validateNoteInputForUpdate,
       update(core),
+    );
+    app.delete(
+      "/users/:userId/folders/:folderId/notes/:noteId",
+      authorize,
+      isUser,
+      validateFolderBelongsToUser(core),
+      validateNoteBelongsToUser(core),
+      destroy(core),
     );
   };
 };

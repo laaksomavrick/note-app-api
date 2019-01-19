@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { Handler, response } from "../api";
 import { Core } from "../core";
 import { AuthorizedFolderRequest } from "../folders/defs";
-import { createNote, getNotesForFolder, updateNote } from "./repository";
 import { AuthorizedNoteRequest } from "./defs";
+import { createNote, destroyNote, getNotesForFolder, updateNote } from "./repository";
 
 /**
  * Retrieve all notes belonging to a folder.
@@ -59,6 +59,24 @@ export const update = ({ db }: Core): Handler => {
     try {
       const note = await updateNote(db, noteId, input);
       response(res, { note });
+    } catch (error) {
+      next(error);
+    }
+  };
+};
+
+/**
+ * Delete a note.
+ */
+export const destroy = ({ db }: Core): Handler => {
+  return async (
+    { noteId }: AuthorizedNoteRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      await destroyNote(db, noteId);
+      response(res, {});
     } catch (error) {
       next(error);
     }
