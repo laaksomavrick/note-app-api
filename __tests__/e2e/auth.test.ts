@@ -15,7 +15,7 @@ describe("/auth", () => {
       .post("/auth")
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.data.token).toBeDefined();
+    expect(response.body.resource.token).toBeDefined();
     done();
   });
 

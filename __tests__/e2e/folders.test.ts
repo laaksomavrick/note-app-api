@@ -20,9 +20,9 @@ describe("GET /users/:userId/folders", () => {
       })
       .send();
     expect(response.status).toBe(200);
-    expect(response.body.data.folders).toBeDefined();
+    expect(response.body.resource.folders).toBeDefined();
     expect([
-      ...new Set(response.body.data.folders.map((folder: Folder) => folder.userId)),
+      ...new Set(response.body.resource.folders.map((folder: Folder) => folder.userId)),
     ]).toEqual([1]);
     done();
   });
@@ -59,7 +59,7 @@ describe("POST /users/:userId/folders", () => {
       })
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.data.folder).toBeDefined();
+    expect(response.body.resource.folder).toBeDefined();
     done();
   });
 
@@ -111,7 +111,7 @@ describe("PATCH /users/:userId/folders/:folderId", () => {
       })
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.data.folder).toBeDefined();
+    expect(response.body.resource.folder).toBeDefined();
     done();
   });
 

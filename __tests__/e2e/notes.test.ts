@@ -20,7 +20,7 @@ describe("GET /users/:userId/notes/:folderId/notes", () => {
       })
       .send();
     expect(response.status).toBe(200);
-    expect(response.body.data.notes).toBeDefined();
+    expect(response.body.resource.notes).toBeDefined();
     done();
   });
 
@@ -69,7 +69,7 @@ describe("POST /users/:userId/notes/:folderId/notes", () => {
       })
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.data.note).toBeDefined();
+    expect(response.body.resource.note).toBeDefined();
     done();
   });
 
@@ -143,7 +143,7 @@ describe("PATCH /users/:userId/folders/:folderId/notes/:noteId", () => {
       })
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.data.note).toBeDefined();
+    expect(response.body.resource.note).toBeDefined();
     done();
   });
 
@@ -159,7 +159,7 @@ describe("PATCH /users/:userId/folders/:folderId/notes/:noteId", () => {
       })
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.data.note).toBeDefined();
+    expect(response.body.resource.note).toBeDefined();
     done();
   });
 

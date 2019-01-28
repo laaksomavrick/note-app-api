@@ -17,7 +17,7 @@ describe("POST /users", () => {
       .post("/users")
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.data.user).toBeDefined();
+    expect(response.body.resource.user).toBeDefined();
     done();
   });
 
@@ -55,8 +55,8 @@ describe("GET /users/me", () => {
         Authorization: johnDoeJwt,
       });
     expect(response.status).toBe(200);
-    expect(response.body.data.user).toBeDefined();
-    expect(response.body.data.user.email).toBeDefined();
+    expect(response.body.resource.user).toBeDefined();
+    expect(response.body.resource.user.email).toBeDefined();
     done();
   });
 

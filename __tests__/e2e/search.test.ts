@@ -20,9 +20,9 @@ describe("GET /users/:userId/notes/search", () => {
       })
       .send(payload);
     expect(response.status).toBe(200);
-    expect(response.body.data.notes).toBeDefined();
+    expect(response.body.resource.notes).toBeDefined();
     expect([
-      ...new Set(response.body.data.notes.map((note: Note) => note.userId)),
+      ...new Set(response.body.resource.notes.map((note: Note) => note.userId)),
     ]).toEqual([1]);
     done();
   });
