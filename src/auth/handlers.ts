@@ -22,12 +22,15 @@ export const create = ({ db, crypto }: Core): Handler => {
     try {
       const user = await findByEmail(db, email);
       if (!user) {
-        throw new NotFoundError();
+        // todo: way to abstract the err details?
+        throw new NotFoundError([{ param: "user", msg: "The user was not found." }]);
       }
 
       const authorized = await crypto.compare(password, user.password);
       if (!authorized) {
-        throw new ForbiddenError();
+        throw new ForbiddenError([
+          { param: "password", msg: "The provided password was incorrect." },
+        ]);
       }
 
       // todo store these

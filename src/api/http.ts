@@ -1,4 +1,5 @@
 import { Response } from "express";
+import { HttpError } from "../errors";
 
 /**
  * Utility function for ensuring common formatting amongst all valid handler responses.
@@ -15,11 +16,14 @@ export const response = (res: Response, resource: object, status: number = 200):
  */
 export const responseError = (
   res: Response,
-  error: Error,
+  error: HttpError,
   status: number = 500,
 ): void => {
   res.status(status).send({
     status,
-    error: error.toString(),
+    error: {
+      msg: error.toString(),
+      errors: error.errors,
+    },
   });
 };
