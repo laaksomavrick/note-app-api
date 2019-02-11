@@ -9,6 +9,42 @@ beforeAll(async () => {
   await seed();
 });
 
+describe("GET /users/:userId/notes", () => {
+  // tslint:disable-next-line:max-line-length
+  test("it can get notes belonging to a user", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const response = await request(app)
+      .get(`/users/${johnDoeUserId}/notes`)
+      .set({
+        Authorization: johnDoeJwt,
+      })
+      .send();
+    expect(response.status).toBe(200);
+    expect(response.body.resource.notes).toBeDefined();
+    done();
+  });
+
+  test("it cannot get notes without a jwt", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const response = await request(app)
+      .get(`/users/${johnDoeUserId}/notes`)
+      .send();
+    expect(response.status).toBe(401);
+    done();
+  });
+
+  // tslint:disable-next-line:max-line-length
+  test("it cannot get notes that don't belong to the user via jwt", async (done: jest.DoneCallback) => {
+    const app = bootstrap();
+    const response = await request(app)
+      .get(`/users/${johnDoeUserId}/notes`)
+      .set({ Authorization: janeDoeJwt })
+      .send();
+    expect(response.status).toBe(403);
+    done();
+  });
+});
+
 describe("GET /users/:userId/notes/:folderId/notes", () => {
   // tslint:disable-next-line:max-line-length
   test("it can get notes belonging to a user and note", async (done: jest.DoneCallback) => {

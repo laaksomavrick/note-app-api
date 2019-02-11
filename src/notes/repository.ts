@@ -24,6 +24,15 @@ export interface NoteInput {
 /**
  * Retrieves all the notes belonging to a particular folder.
  */
+export const getNotesForUser = async (db: Database, userId: number): Promise<Note[]> => {
+  const { rows } = await db.query(`SELECT * FROM notes WHERE user_id = $1`, [userId]);
+  const notes = parseRowsToType<Note>(rows);
+  return notes;
+};
+
+/**
+ * Retrieves all the notes belonging to a particular folder.
+ */
 export const getNotesForFolder = async (
   db: Database,
   folderId: number,

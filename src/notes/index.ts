@@ -1,7 +1,7 @@
 import { Express } from "express";
 import { authorize, Core, isUser } from "../core";
 import { validateFolderBelongsToUser } from "../folders/middlewares";
-import { create, destroy, get, update } from "./handlers";
+import { create, destroy, get, getAll, update } from "./handlers";
 import {
   validateNoteBelongsToUser,
   validateNoteInputForCreate,
@@ -13,6 +13,7 @@ import {
  */
 export default (core: Core): ((app: Express) => void) => {
   return (app: Express): void => {
+    app.get("/users/:userId/notes", authorize, isUser, getAll(core));
     app.get(
       "/users/:userId/folders/:folderId/notes",
       authorize,

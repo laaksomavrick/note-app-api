@@ -1,9 +1,33 @@
 import { NextFunction, Response } from "express";
-import { Handler, response } from "../api";
+import { AuthorizedRequest, Handler, response } from "../api";
 import { Core } from "../core";
 import { AuthorizedFolderRequest } from "../folders/defs";
 import { AuthorizedNoteRequest } from "./defs";
-import { createNote, destroyNote, getNotesForFolder, updateNote } from "./repository";
+import {
+  createNote,
+  destroyNote,
+  getNotesForFolder,
+  getNotesForUser,
+  updateNote,
+} from "./repository";
+
+/**
+ * Retrieve all notes belonging to a user.
+ */
+export const getAll = ({ db }: Core): Handler => {
+  return async (
+    { userId }: AuthorizedRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const notes = await getNotesForUser(db, userId);
+      response(res, { notes });
+    } catch (error) {
+      next(error);
+    }
+  };
+};
 
 /**
  * Retrieve all notes belonging to a folder.
