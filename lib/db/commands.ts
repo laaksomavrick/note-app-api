@@ -16,13 +16,15 @@ export const seed = async (): Promise<void> => {
   }
 };
 
-// todo: up; down; rollback
+// todo: up; down; migrate
 export const migrate = async (): Promise<void> => {
   const fileNames = await findSqlFileNames(MIGRATIONS_DIRECTORY);
-  for (const fileName of fileNames) {
+  for (const [index, fileName] of fileNames.entries()) {
     const filePath = path.join(__dirname, `./migrations/${fileName}`);
     const insertMigrationHistory = async (): Promise<void> => {
-      await pool.query("INSERT INTO migrations (name) VALUES ($1)", [fileName]);
+      if (index !== 0) {
+        await pool.query("INSERT INTO migrations (name) VALUES ($1)", [fileName]);
+      }
     };
     await runSqlFile(filePath, insertMigrationHistory);
     if (process.env.NODE_ENV !== "test") {
