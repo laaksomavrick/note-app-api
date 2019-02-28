@@ -4,6 +4,7 @@ import { responseError } from "../api";
 import { AuthorizedRequest } from "../api";
 import config from "../config";
 import { ForbiddenError, UnauthorizedError } from "../errors";
+import { logError } from "../logger";
 
 /**
  * The top level error handler for the app.
@@ -16,6 +17,13 @@ export const globalErrorHandler = (
   next: NextFunction,
 ): void => {
   const status = error.status || 500;
+  logError({
+    url: req.url,
+    params: req.params,
+    status,
+    error: error.toString(),
+    stack: error.stack,
+  });
   responseError(res, error, status);
 };
 

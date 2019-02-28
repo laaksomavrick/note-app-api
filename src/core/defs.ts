@@ -1,4 +1,3 @@
-import winston from "winston";
 import { Database, db } from "../db";
 
 /**
@@ -7,7 +6,6 @@ import { Database, db } from "../db";
  */
 export interface Core {
   db: Database;
-  logger: winston.Logger;
   crypto: Crypto;
 }
 
