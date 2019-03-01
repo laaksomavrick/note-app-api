@@ -54,6 +54,27 @@ export const getFoldersForUser = async (
 };
 
 /**
+ * Find all folders belonging to a particualr user, including the folder notes.
+ * This uses fancy postgres json functions to avoid manually populating the folder notes.
+ */
+export const getFoldersForUserWithNotes = async (
+  db: Database,
+  userId: number,
+): Promise<Folder[] | null> => {
+  const { rows } = await db.query(
+    `SELECT folders.*,
+            json_agg(notes.*) as notes
+      FROM folders
+      INNER JOIN notes ON folders.id = notes.folder_id
+      WHERE folders.user_id = $1
+      GROUP BY folders.id`,
+    [userId],
+  );
+  const folders = parseRowsToType<Folder>(rows);
+  return folders;
+};
+
+/**
  * Updates a folder given an id.
  */
 export const updateFolder = async (

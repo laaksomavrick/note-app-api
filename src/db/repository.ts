@@ -19,16 +19,8 @@ export const parseRowsToType = <T>(rows: QueryResult): T[] => {
   if (!raw || raw.length === 0) {
     return [];
   }
-  const formatted = rows.map((row: object) => {
-    const obj = {} as T;
-    const keys = Object.keys(row);
-    for (const key of keys) {
-      const camelKey = camelCase(key);
-      obj[camelKey] = row[key];
-    }
-    return obj;
-  });
-  return formatted;
+  // tslint:disable-next-line:no-any
+  return rows.map((row: any) => camelizeObject<T>(row));
 };
 
 /**
@@ -61,4 +53,25 @@ export const updateTemplateStringAndArgs = (
     template,
     args,
   };
+};
+
+const camelizeObject = <T>(input: T): T => {
+  const obj = {} as T;
+  const keys = Object.keys(input);
+  for (const key of keys) {
+    const value = input[key];
+    const camelKey = camelCase(key);
+    if (value !== Object(value) || value instanceof Date) {
+      obj[camelKey] = value;
+    } else if (Array.isArray(value)) {
+      obj[camelKey] = camelizeArray(value);
+    } else {
+      obj[camelKey] = camelizeObject(value);
+    }
+  }
+  return obj;
+};
+
+const camelizeArray = (input: {}[]): {}[] => {
+  return input.map((obj: object) => camelizeObject(obj));
 };

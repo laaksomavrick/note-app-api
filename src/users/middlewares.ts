@@ -14,7 +14,7 @@ export const validateUserInput = ({ db }: Core): Handler => {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      // todo email regexp check
+      // todo email regexp check? or validator
       const valid = email !== null && password !== null && password.length > 8;
       if (!valid) {
         throw new ValidationError();

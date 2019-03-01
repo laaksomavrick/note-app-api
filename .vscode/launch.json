@@ -5,6 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Attach",
+      "type": "node",
+      "protocol": "inspector",
+      "request": "attach",
+      "restart": true,
+      "skipFiles": ["node_modules/**/*.js", "<node_internals>/**/*.js"],
+      "smartStep": true,
+      "port": 9229,
+      "sourceMaps": true
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",

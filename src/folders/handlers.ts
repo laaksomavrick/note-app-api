@@ -5,7 +5,7 @@ import { AuthorizedFolderRequest } from "./defs";
 import {
   createFolder,
   destroyFolder,
-  getFoldersForUser,
+  getFoldersForUserWithNotes,
   updateFolder,
 } from "./repository";
 
@@ -19,7 +19,7 @@ export const get = ({ db }: Core): Handler => {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const folders = await getFoldersForUser(db, userId);
+      const folders = await getFoldersForUserWithNotes(db, userId);
       response(res, { folders });
     } catch (error) {
       next(error);
