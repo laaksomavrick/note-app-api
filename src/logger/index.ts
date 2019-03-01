@@ -1,3 +1,5 @@
+import config from "../config";
+
 export interface LogArgs {
   url?: string;
   params?: string;
@@ -16,7 +18,9 @@ enum ConsoleColor {
 
 const log = (color: ConsoleColor, params: LogArgs): void => {
   // todo: if dev, console. if prod, write to file.
-  console.log(color, JSON.stringify(params, null, 2));
+  if (config.get("env") !== "test") {
+    console.log(color, JSON.stringify(params, null, 2));
+  }
 };
 
 /**
