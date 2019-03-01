@@ -62,12 +62,14 @@ export const getFoldersForUserWithNotes = async (
   userId: number,
 ): Promise<Folder[] | null> => {
   const { rows } = await db.query(
-    `SELECT folders.*,
-            json_agg(notes.*) as notes
-      FROM folders
-      INNER JOIN notes ON folders.id = notes.folder_id
-      WHERE folders.user_id = $1
-      GROUP BY folders.id`,
+    `
+    SELECT
+      folders.*,
+      json_agg(notes.*) as notes
+    FROM folders
+    INNER JOIN notes ON folders.id = notes.folder_id
+    WHERE folders.user_id = $1
+    GROUP BY folders.id`,
     [userId],
   );
   const folders = parseRowsToType<Folder>(rows);
