@@ -1,8 +1,14 @@
-## Express CRUD api
+# Express CRUD api
 
-`make up`
-`make migrate`
-`make seed`
-`make test`
+## Getting a dev env up
 
-`yarn start`
+- `make up`
+- `make create`
+- `make migrate`
+- `make seed`
+- `make test`
+- `yarn start`
+
+## Deploying to production
+
+wip, but coming soon

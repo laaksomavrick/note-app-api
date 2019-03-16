@@ -13,6 +13,7 @@
     "start:hmr": "node dist/server",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
+    "db:create": "ts-node -r tsconfig-paths/register lib/db/create.ts",
     "db:migrate": "ts-node -r tsconfig-paths/register lib/db/migrate.ts",
     "db:seed": "ts-node -r tsconfig-paths/register lib/db/seed.ts",
     "test:watch": "jest --watch",

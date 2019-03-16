@@ -5,6 +5,22 @@ import { pool } from "../../src/db"; // todo, move this up
 const MIGRATIONS_DIRECTORY = path.join(__dirname, "./migrations");
 const SEEDS_DIRECTORY = path.join(__dirname, "./seeds");
 
+export const create = async (): Promise<void> => {
+  const databases = ["notes_dev", "notes_test", "notes_prod"];
+  for (const database of databases) {
+    const { rowCount } = await pool.query(
+      `SELECT 1 FROM pg_database WHERE datname = \'${database}\'`,
+    );
+    if (rowCount !== 1) {
+      console.log(`Creating ${database}`);
+      await pool.query(`CREATE DATABASE ${database}`);
+      console.log(`Created ${database}`);
+    } else {
+      console.log(`Found ${database}`);
+    }
+  }
+};
+
 export const seed = async (): Promise<void> => {
   const fileNames = await findSqlFileNames(SEEDS_DIRECTORY);
   for (const fileName of fileNames) {
