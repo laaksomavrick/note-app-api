@@ -2,21 +2,30 @@
 
 FROM node:10-alpine AS builder
 
-WORKDIR /home/node/app
-COPY . .
-RUN yarn install && \
-    yarn prestart:prod
+# https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#node-gyp-alpine
+RUN apk add --no-cache --virtual .gyp python make g++
+
+COPY ./package.json .
+COPY ./yarn.lock .
+
+RUN yarn cache clean --force && \
+    yarn install
+
+COPY ./tsconfig.json .
+COPY ./src ./src
+
+RUN yarn prestart:prod
 
 # Run step
 
 FROM node:10-alpine
 ENV NODE_ENV=production
-WORKDIR /home/node/app
 
-COPY ./package* ./
-RUN yarn install && \
-    yarn cache clean --force
-COPY --from=builder /home/node/app/dist ./dist
+# COPY ./package* ./
+# RUN yarn install && \
+#     yarn cache clean --force
+COPY --from=builder ./node_modules ./node_modules
+COPY --from=builder ./dist ./dist
 
 EXPOSE 3000
 

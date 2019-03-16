@@ -17,6 +17,6 @@
   "typeAcquisition": {
     "include": ["jest"]
   },
-  "include": ["src/**/*", "node_modules/@types", "test/**/**/*"],
+  "include": ["src/**/*", "node_modules/@types"],
   "exclude": ["node_modules"]
 }

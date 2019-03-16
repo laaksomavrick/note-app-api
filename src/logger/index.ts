@@ -2,11 +2,14 @@ import config from "../config";
 
 export interface LogArgs {
   url?: string;
+  timestamp?: string;
   params?: string;
   message?: string;
-  status?: string;
+  status?: string | number;
   error?: string;
   stack?: string;
+  // tslint:disable-next-line:no-any
+  info?: any;
 }
 
 enum ConsoleColor {
@@ -19,7 +22,9 @@ enum ConsoleColor {
 const log = (color: ConsoleColor, params: LogArgs): void => {
   // todo: if dev, console. if prod, write to file.
   if (config.get("env") !== "test") {
-    console.log(color, JSON.stringify(params, null, 2));
+    const timestamp = new Date().toISOString();
+    const meta = { timestamp, ...params };
+    console.log(color, JSON.stringify(meta, null, 2));
   }
 };
 

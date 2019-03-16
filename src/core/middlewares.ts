@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { responseError } from "../api";
-import { AuthorizedRequest } from "../api";
+import { AuthorizedRequest, responseError } from "../api";
 import config from "../config";
 import { ForbiddenError, UnauthorizedError } from "../errors";
 import { logError } from "../logger";

@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "engines": {
-    "node": "10.14.1"
+    "node": "10"
   },
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
@@ -20,7 +20,7 @@
     "test:e2e": "jest --forceExit --runInBand",
     "webpack": "webpack --config webpack.config.js",
     "docker:prod:build": "docker build -t laaksomavrick/notesapi:latest .",
-    "docker:prod:run": "docker run -p 3000:3000 notesapi:latest",
+    "docker:prod:run": "docker run -p 3000:3000 laaksomavrick/notesapi:latest",
     "docker:prod:push": "docker push laaksomavrick/notesapi:latest"
   },
   "devDependencies": {
@@ -37,6 +37,7 @@
     "jest": "^23.6.0",
     "nodemon": "^1.18.8",
     "prettier": "^1.15.3",
+    "rimraf": "^2.6.3",
     "supertest": "^3.3.0",
     "ts-jest": "^23.10.5",
     "ts-loader": "^5.3.1",
