@@ -1,5 +1,6 @@
 import pg from "pg";
 import config from "../config";
+import { logError } from "../logger";
 import { Database } from "./defs";
 
 /**
@@ -23,9 +24,11 @@ const client = (): Promise<pg.PoolClient> => pool.connect();
 
 const ping = async (): Promise<boolean> => {
   try {
-    await db.query("select 1", []);
+    await pool.connect();
+    await pool.query("select 1", []);
     return true;
   } catch (e) {
+    logError({ error: e });
     return false;
   }
 };

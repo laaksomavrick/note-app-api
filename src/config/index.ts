@@ -27,22 +27,27 @@ const config = convict({
     host: {
       default: "localhost",
       env: "DB_HOST",
+      arg: "db-host",
     },
     port: {
       default: 5432,
       env: "DB_PORT",
+      arg: "db-port",
     },
     username: {
       default: "postgres",
       env: "DB_USERNAME",
+      arg: "db-username",
     },
     password: {
       default: "postgres",
       env: "DB_PASSWORD",
+      arg: "db-password",
     },
     schema: {
       default: "notes_dev",
       env: "DB_SCHEMA",
+      arg: "db-schema",
     },
   },
   secret: {

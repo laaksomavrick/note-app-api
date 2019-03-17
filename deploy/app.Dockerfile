@@ -8,8 +8,7 @@ RUN apk add --no-cache --virtual .gyp python make g++
 COPY ./package.json .
 COPY ./yarn.lock .
 
-RUN yarn cache clean --force && \
-    yarn install
+RUN yarn install
 
 COPY ./tsconfig.json .
 COPY ./src ./src
@@ -21,9 +20,6 @@ RUN yarn prestart:prod
 FROM node:10-alpine
 ENV NODE_ENV=production
 
-# COPY ./package* ./
-# RUN yarn install && \
-#     yarn cache clean --force
 COPY --from=builder ./node_modules ./node_modules
 COPY --from=builder ./dist ./dist
 

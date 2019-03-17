@@ -13,6 +13,7 @@
     "start:hmr": "node dist/server",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
+    "db:main": "ts-node -r tsconfig-paths/register lib/db/main.ts",
     "db:create": "ts-node -r tsconfig-paths/register lib/db/create.ts",
     "db:migrate": "ts-node -r tsconfig-paths/register lib/db/migrate.ts",
     "db:seed": "ts-node -r tsconfig-paths/register lib/db/seed.ts",
@@ -20,9 +21,11 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --forceExit --runInBand",
     "webpack": "webpack --config webpack.config.js",
-    "docker:prod:build": "docker build -t laaksomavrick/notesapi:latest .",
-    "docker:prod:run": "docker run -p 3000:3000 laaksomavrick/notesapi:latest",
-    "docker:prod:push": "docker push laaksomavrick/notesapi:latest"
+    "docker:build:app": "docker build -f deploy/app.Dockerfile -t laaksomavrick/notes-api:latest .",
+    "docker:build:migrator": "docker build -f deploy/migrator.Dockerfile -t laaksomavrick/notes-migrator:latest .",
+    "docker:run:app": "docker run -p 3000:3000 laaksomavrick/notes-api:latest",
+    "docker:run:migrator": "docker run --env-file=deploy/migrator_env laaksomavrick/notes-migrator:latest",
+    "docker:push:app": "docker push laaksomavrick/notesapi:latest"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
