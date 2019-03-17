@@ -3,16 +3,28 @@ import config from "../config";
 import { logError } from "../logger";
 import { Database } from "./defs";
 
+// https://stackoverflow.com/questions/48392587/cloud-sql-is-throwing-etimedout-error-when-queried-from-node-js-application-depl
+// todo: fix this
+export const connection =
+  config.get("env") === "production"
+    ? {
+        host: `/cloudsql/${config.get("database.socketPath")}`,
+        user: config.get("database.username"),
+        password: config.get("database.password"),
+        database: config.get("database.schema"),
+      }
+    : {
+        host: config.get("database.host"),
+        port: config.get("database.port"),
+        user: config.get("database.username"),
+        password: config.get("database.password"),
+        database: config.get("database.schema"),
+      };
+
 /**
  * The connection object (actually grabs a connection from the pool)
  */
-export const pool = new pg.Pool({
-  host: config.get("database.host"),
-  port: config.get("database.port"),
-  user: config.get("database.username"),
-  password: config.get("database.password"),
-  database: config.get("database.schema"),
-});
+export const pool = new pg.Pool(connection);
 
 // tslint:disable-next-line:no-any
 const query = (text: string, params: any[]): Promise<pg.QueryResult> =>

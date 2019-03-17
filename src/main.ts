@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import config from "./config";
 import { bootstrap, Core, pingDb } from "./core";
-import { db } from "./db";
+import { connection, db } from "./db";
 import { logError } from "./logger";
 
 /**
@@ -26,12 +26,15 @@ const main = async (): Promise<void> => {
       info: {
         port: config.get("port"),
         host: config.get("host"),
+        env: config.get("env"),
         database: {
           host: config.get("database.host"),
           port: config.get("database.port"),
           username: config.get("database.username"),
           db: config.get("database.schema"),
+          socketPath: config.get("database.socketPath"),
         },
+        connection,
       },
     });
   }

@@ -49,6 +49,10 @@ const config = convict({
       env: "DB_SCHEMA",
       arg: "db-schema",
     },
+    socketPath: {
+      default: null,
+      env: "INSTANCE_CONNECTION_NAME",
+    },
   },
   secret: {
     jwt: {

@@ -4,3 +4,4 @@ combined.log
 error.log
 start_with_remote_db.sh
 deploy/migrator_env
+deploy/app_env_variables.yaml

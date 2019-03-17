@@ -23,6 +23,6 @@ ENV NODE_ENV=production
 COPY --from=builder ./node_modules ./node_modules
 COPY --from=builder ./dist ./dist
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD node dist/main.js

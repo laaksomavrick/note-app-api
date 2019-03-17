@@ -1,0 +1,6 @@
+runtime: custom
+env: flex
+includes:
+  - app_env_variables.yaml
+beta_settings:
+  cloud_sql_instances: mav-playground:northamerica-northeast1:notes-api-db
