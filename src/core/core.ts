@@ -1,9 +1,10 @@
+import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Express } from "express";
 import auth from "../auth";
 import config from "../config";
-import { Database } from "../db";
+import { Database, db } from "../db";
 import folders from "../folders";
 import healthz from "../healthz";
 import { logError, logOk } from "../logger";
@@ -15,7 +16,12 @@ import { globalErrorHandler } from "./middlewares";
 
 // todo: default request timeout
 
-export const bootstrap = (core: Core): Express => {
+export const bootstrap = (
+  core: Core = {
+    db,
+    crypto: bcrypt,
+  },
+): Express => {
   const app = express();
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
