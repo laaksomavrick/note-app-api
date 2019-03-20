@@ -1,0 +1,36 @@
+image: google/cloud-sdk:alpine
+
+services:
+  - docker:dind
+
+variables:
+  APP_CONTAINER_TAG: gcr.io/mav-playground/notes-api:$CI_COMMIT_SHA
+  MIGRATOR_CONTAINER_TAG: gcr.io/mav-playground/notes-migrator:$CI_COMMIT_SHA
+
+before_script:
+  - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+  - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
+
+deploy_app:
+  stage: deploy
+  only:
+    refs:
+      - master
+    changes:
+      - src/*
+  script:
+    - docker build -f deploy/app.Dockerfile -t $APP_CONTAINER_TAG .
+    - docker tag $APP_CONTAINER_TAG gcr.io/mav-playground/notes-api
+    - docker push $APP_CONTAINER_TAG
+    - gcloud app deploy deploy/app.yaml --image-url $APP_CONTAINER_TAG
+
+deploy_migrator:
+  stage: deploy
+  only:
+    refs:
+      - master
+    changes:
+      - lib/db/*
+  script:
+    - docker build -f deploy/migrator.Dockerfile -t $MIGRATOR_CONTAINER_TAG .
+    - docker run --env-file=deploy/migrator_env $MIGRATOR_CONTAINER_TAG
