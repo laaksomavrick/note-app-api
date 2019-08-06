@@ -9,21 +9,21 @@ import { logError } from "../logger";
  * The top level error handler for the app.
  */
 export const globalErrorHandler = (
-  // tslint:disable-next-line:no-any
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction,
+    // tslint:disable-next-line:no-any
+    error: any,
+    req: Request,
+    res: Response,
+    next: NextFunction,
 ): void => {
-  const status = error.status || 500;
-  logError({
-    url: req.url,
-    params: req.params,
-    status,
-    error: error.toString(),
-    stack: error.stack,
-  });
-  responseError(res, error, status);
+    const status = error.status || 500;
+    logError({
+        url: req.url,
+        params: req.params,
+        status,
+        error: error.toString(),
+        stack: error.stack,
+    });
+    responseError(res, error, status);
 };
 
 /**
@@ -31,29 +31,25 @@ export const globalErrorHandler = (
  * Checks the incoming request for a JWT. If it exists, populates the userId
  * on the request.
  */
-export const authorize = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  try {
-    const {
-      headers: { authorization = null },
-    } = req;
-    if (!authorization) {
-      throw new UnauthorizedError();
+export const authorize = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const {
+            headers: { authorization = null },
+        } = req;
+        if (!authorization) {
+            throw new UnauthorizedError();
+        }
+        const token = authorization.split("Bearer ")[1];
+        if (!token) {
+            throw new UnauthorizedError();
+        }
+        // tslint:disable-next-line:no-any
+        const { id } = (await verify(token, config.get("secret.jwt"))) as any;
+        (req as AuthorizedRequest).userId = id;
+        next();
+    } catch (error) {
+        next(error);
     }
-    const token = authorization.split("Bearer ")[1];
-    if (!token) {
-      throw new UnauthorizedError();
-    }
-    // tslint:disable-next-line:no-any
-    const { id } = (await verify(token, config.get("secret.jwt"))) as any;
-    (req as AuthorizedRequest).userId = id;
-    next();
-  } catch (error) {
-    next(error);
-  }
 };
 
 /**
@@ -61,16 +57,16 @@ export const authorize = async (
  * AuthorizedRequest's userId
  */
 export const isUser = async (
-  { params: { userId: paramUserId }, userId: authorizedUserId }: AuthorizedRequest,
-  res: Response,
-  next: NextFunction,
+    { params: { userId: paramUserId }, userId: authorizedUserId }: AuthorizedRequest,
+    res: Response,
+    next: NextFunction,
 ): Promise<void> => {
-  try {
-    if (parseInt(paramUserId, 10) !== authorizedUserId) {
-      throw new ForbiddenError();
+    try {
+        if (parseInt(paramUserId, 10) !== authorizedUserId) {
+            throw new ForbiddenError();
+        }
+        next();
+    } catch (error) {
+        next(error);
     }
-    next();
-  } catch (error) {
-    next(error);
-  }
 };

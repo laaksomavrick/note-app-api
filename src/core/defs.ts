@@ -5,16 +5,16 @@ import { Database, db } from "../db";
  * Used in a simple DI/IoC pattern (see handlers).
  */
 export interface Core {
-  db: Database;
-  crypto: Crypto;
+    db: Database;
+    crypto: Crypto;
 }
 
 /**
  * The shape of an object responsible for hashing and checking passwords.
  */
 export interface Crypto {
-  // tslint:disable-next-line:no-any
-  hash: (data: any, saltOrRounds: string | number) => Promise<string>;
-  // tslint:disable-next-line:no-any
-  compare: (data: any, encrypted: string) => Promise<boolean>;
+    // tslint:disable-next-line:no-any
+    hash: (data: any, saltOrRounds: string | number) => Promise<string>;
+    // tslint:disable-next-line:no-any
+    compare: (data: any, encrypted: string) => Promise<boolean>;
 }

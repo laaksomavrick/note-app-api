@@ -20,7 +20,6 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --forceExit --runInBand",
-    "webpack": "webpack --config webpack.config.js",
     "docker:build:app": "docker build -f deploy/app.Dockerfile -t laaksomavrick/notes-api:latest .",
     "docker:build:migrator": "docker build -f deploy/migrator.Dockerfile -t laaksomavrick/notes-migrator:latest .",
     "docker:run:app": "docker run -p 3000:3000 laaksomavrick/notes-api:latest",

@@ -2,39 +2,35 @@
  * The shape of an error's details
  */
 export interface ErrorDetail {
-  param: string;
-  msg: string;
+    param: string;
+    msg: string;
 }
 
 /**
  * An http error object. Derived from to form various http errors.
  */
 export class HttpError extends Error {
-  constructor(
-    public message: string,
-    public status: number,
-    public errors?: ErrorDetail[],
-  ) {
-    super();
-  }
+    constructor(public message: string, public status: number, public errors?: ErrorDetail[]) {
+        super();
+    }
 }
 
 /**
  * A validation error. Typically used to signal wrong or missing req params.
  */
 export class ValidationError extends HttpError {
-  constructor(errors: ErrorDetail[] = null) {
-    super("The request was invalid", 400, errors);
-  }
+    constructor(errors: ErrorDetail[] = null) {
+        super("The request was invalid", 400, errors);
+    }
 }
 
 /**
  * A not found error. Typically used to signal a requested resource doesn't exist.
  */
 export class NotFoundError extends HttpError {
-  constructor(errors: ErrorDetail[] = null) {
-    super("The requested resource was not found", 404, errors);
-  }
+    constructor(errors: ErrorDetail[] = null) {
+        super("The requested resource was not found", 404, errors);
+    }
 }
 
 /**
@@ -42,9 +38,9 @@ export class NotFoundError extends HttpError {
  * requested resource.
  */
 export class ForbiddenError extends HttpError {
-  constructor(errors: ErrorDetail[] = null) {
-    super("The requested resource is forbidden", 403, errors);
-  }
+    constructor(errors: ErrorDetail[] = null) {
+        super("The requested resource is forbidden", 403, errors);
+    }
 }
 
 /**
@@ -52,7 +48,7 @@ export class ForbiddenError extends HttpError {
  * for the requested resource (e.g. missing jwt)
  */
 export class UnauthorizedError extends HttpError {
-  constructor(errors: ErrorDetail[] = null) {
-    super("The request does not have proper credentials", 401, errors);
-  }
+    constructor(errors: ErrorDetail[] = null) {
+        super("The request does not have proper credentials", 401, errors);
+    }
 }

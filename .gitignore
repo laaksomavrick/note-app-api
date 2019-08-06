@@ -7,3 +7,4 @@ deploy/migrator_env
 deploy/app_env_variables.yaml
 .vscode
 .idea
+.yarn-error.log

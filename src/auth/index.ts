@@ -7,7 +7,7 @@ import { validateCreate } from "./middlewares";
  * Module exposing authorization routes and their handlers.
  */
 export default (core: Core): ((app: Express) => void) => {
-  return (app: Express): void => {
-    app.post("/auth", validateCreate, create(core));
-  };
+    return (app: Express): void => {
+        app.post("/auth", validateCreate, create(core));
+    };
 };
