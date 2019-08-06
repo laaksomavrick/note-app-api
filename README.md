@@ -12,6 +12,7 @@ There is a functional test suite which requires having a connection to a databas
 
 ## Getting a dev env up
 
+- `yarn`
 - `make up`
 - `make create`
 - `make migrate`
