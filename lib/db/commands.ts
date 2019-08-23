@@ -1,19 +1,21 @@
 import fs from "fs";
 import path from "path";
-import { pool } from "../../src/db"; // todo, move this up
+import DatabaseClient from "../../src/db/db";
 
 const MIGRATIONS_DIRECTORY = path.join(__dirname, "./migrations");
 const SEEDS_DIRECTORY = path.join(__dirname, "./seeds");
 
+const db = new DatabaseClient();
+
 export const create = async (): Promise<void> => {
   const databases = ["notes_dev", "notes_test", "notes_prod"];
   for (const database of databases) {
-    const { rowCount } = await pool.query(
-      `SELECT 1 FROM pg_database WHERE datname = \'${database}\'`,
+    const { rowCount } = await db.query(
+      `SELECT 1 FROM pg_database WHERE datname = \'${database}\'`, []
     );
     if (rowCount !== 1) {
       console.log(`Creating ${database}`);
-      await pool.query(`CREATE DATABASE ${database}`);
+      await db.query(`CREATE DATABASE ${database}`, []);
       console.log(`Created ${database}`);
     } else {
       console.log(`Found ${database}`);
@@ -39,7 +41,7 @@ export const migrate = async (): Promise<void> => {
     const filePath = path.join(__dirname, `./migrations/${fileName}`);
     const insertMigrationHistory = async (): Promise<void> => {
       if (index !== 0) {
-        await pool.query("INSERT INTO migrations (name) VALUES ($1)", [fileName]);
+        await db.query("INSERT INTO migrations (name) VALUES ($1)", [fileName]);
       }
     };
     await runSqlFile(filePath, insertMigrationHistory);
@@ -59,7 +61,7 @@ const runSqlFile = async (
   afterFn?: () => Promise<void>,
 ): Promise<void> => {
   const fileContents = await fs.promises.readFile(filePath, "utf8");
-  await pool.query(fileContents);
+  await db.query(fileContents, []);
   if (afterFn) {
     await afterFn();
   }

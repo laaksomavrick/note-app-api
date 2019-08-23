@@ -4,7 +4,8 @@ import cors from "cors";
 import express, { Express } from "express";
 import auth from "../auth";
 import config from "../config";
-import { Database, db } from "../db";
+import { Database } from "../db";
+import DatabaseClient from "../db/db";
 import folders from "../folders";
 import healthz from "../healthz";
 import { logError, logOk } from "../logger";
@@ -18,11 +19,14 @@ import { globalErrorHandler } from "./middlewares";
 
 export const bootstrap = (
     core: Core = {
-        db,
+        db: new DatabaseClient(),
         crypto: bcrypt,
     },
 ): Express => {
     const app = express();
+    // TODO: make this cleaner; tests can hook into core this way
+    // tslint:disable-next-line:no-any
+    (app as any).core = core;
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use(cors());

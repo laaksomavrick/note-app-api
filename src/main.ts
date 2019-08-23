@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import config from "./config";
 import { bootstrap, Core, pingDb } from "./core";
-import { connection, db } from "./db";
+import DatabaseClient from "./db/db";
 import { logError } from "./logger";
 
 /**
@@ -11,7 +11,7 @@ const main = async (): Promise<void> => {
     try {
         const port = config.get("port") || 3000;
         const core: Core = {
-            db,
+            db: new DatabaseClient(),
             crypto: bcrypt,
         };
         await core.db.client();
@@ -34,7 +34,6 @@ const main = async (): Promise<void> => {
                     db: config.get("database.schema"),
                     socketPath: config.get("database.socketPath"),
                 },
-                connection,
             },
         });
     }
