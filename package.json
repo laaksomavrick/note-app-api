@@ -50,7 +50,7 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "bcrypt": "^3.0.2",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "change-case": "^3.0.2",
     "convict": "^4.4.0",
